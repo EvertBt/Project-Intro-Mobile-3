@@ -1,3 +1,4 @@
+import 'package:examen_app/changepassword.dart';
 import 'package:examen_app/home.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class _AdminStart extends State<AdminStart> {
   static const List<Widget> _widgetOptions = <Widget>[
     Text("Studenten"),
     Text("Examen"),
-    Text('Wachtwoord wijzigen')
+    ChangePassword()
   ];
 
   void _onItemTapped(int index) {
