@@ -1,3 +1,4 @@
+import 'package:examen_app/admin_start.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -22,6 +23,9 @@ class _LoginState extends State<Login> {
       //FireBase wachtwoord ophalen
       else if (password != "password") {
         errortext = "Fout wachtwoord";
+      } else if (password == "password") {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AdminStart()));
       }
     });
   }
