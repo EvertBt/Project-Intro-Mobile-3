@@ -22,6 +22,7 @@ class Home extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 padding: const EdgeInsets.all(8.0),
+                elevation: 5,
               ),
               child: const Text(
                 'Student',
@@ -40,6 +41,7 @@ class Home extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 padding: const EdgeInsets.all(8.0),
+                elevation: 5,
               ),
               child: const Text(
                 'Admin',
