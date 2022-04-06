@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  String? password;
+  String? errortext;
+
+  void _login() {
+    setState(() {
+      errortext = null;
+      print({"Login met wachtwoord $password"});
+
+      if (password == null || password == "") {
+        errortext = "Dit veld mag niet leeg zijn";
+      }
+      //FireBase wachtwoord ophalen
+      else if (password != "password") {
+        errortext = "Fout wachtwoord";
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +38,12 @@ class Login extends StatelessWidget {
             height: 150.0,
             margin: const EdgeInsets.symmetric(horizontal: 100.0),
             child: TextField(
+              onChanged: (value) => password = value,
+              obscureText: true,
               cursorColor: const Color.fromARGB(255, 227, 5, 20),
               decoration: InputDecoration(
                 labelText: 'Wachtwoord',
-                //errorText aanpassen voor fout wachtwoord
+                errorText: errortext,
                 labelStyle: const TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -35,7 +60,7 @@ class Login extends StatelessWidget {
           height: 100.0,
           margin: const EdgeInsets.symmetric(horizontal: 100.0),
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: _login,
               style: ElevatedButton.styleFrom(
                   primary: const Color.fromARGB(255, 227, 5, 20),
                   onPrimary: Colors.white,

@@ -8,7 +8,7 @@ void main() {
     const MaterialApp(
       title: 'Flutter Tutorial',
       home: Start(
-        body: Home(),
+        body: Login(),
       ),
     ),
   );
