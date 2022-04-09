@@ -33,10 +33,16 @@ class _AdminStart extends State<AdminStart> {
             Container(
                 width: 100.0,
                 height: 57.0,
+                padding: const EdgeInsets.only(left: 10.0),
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 174, 15, 11),
                 ),
-                child: const Image(image: AssetImage('assets/logo.png'))),
+                child: const Image(
+                  image: AssetImage('assets/logosmall.png'), 
+                  isAntiAlias: true, 
+                  filterQuality: FilterQuality.high,
+                )
+            ),
             Expanded(
               child: BottomNavigationBar(
                 elevation: 0,

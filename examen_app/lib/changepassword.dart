@@ -55,7 +55,7 @@ class _ChangePassword extends State<ChangePassword> {
         oldPassword = null;
         newPassword = null;
         confirmNewPassword = null;
-        successMessage = "Wacthwoord succesvol veranderd";
+        successMessage = "Wachtwoord succesvol gewijzigd";
         //Nieuw wachtwoord in firebase opslagen
       }
     });

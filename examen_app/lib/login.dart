@@ -86,9 +86,16 @@ class _LoginState extends State<Login> {
         )),
         bottomNavigationBar: Container(
           height: 100.0,
+          padding: const EdgeInsets.only(left: 20.0),
           decoration: const BoxDecoration(
               color: Color.fromARGB(255, 174, 15, 11),
-              boxShadow: [BoxShadow(blurRadius: 5.0)]),
+              boxShadow: [BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))]),
+          child: Row(
+            children: const [
+              Image(
+            image: AssetImage('assets/logosmall.png'), isAntiAlias: true, filterQuality: FilterQuality.high, height: 50.0,),
+            ],
+          )
         ));
   }
 }
