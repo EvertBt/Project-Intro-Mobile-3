@@ -1,4 +1,6 @@
+import 'package:examen_app/colors.dart';
 import 'package:examen_app/login.dart';
+import 'package:examen_app/student_home.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -10,7 +12,7 @@ class Home extends StatelessWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Center(child: Text('Examen App')),
-          backgroundColor: const Color.fromARGB(255, 174, 15, 11),
+          backgroundColor: CustomColor.primary,
         ),
         body: Center(
             child: Column(
@@ -23,9 +25,14 @@ class Home extends StatelessWidget {
               margin:
                   const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const StudentHome()));
+                  },
                   style: ElevatedButton.styleFrom(
-                    primary: const Color.fromARGB(255, 227, 5, 20),
+                    primary: CustomColor.button,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -44,11 +51,13 @@ class Home extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        NoAnimationMaterialPageRoute(builder: (context) => const Login()));
+                    Navigator.push(
+                        context,
+                        NoAnimationMaterialPageRoute(
+                            builder: (context) => const Login()));
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: const Color.fromARGB(255, 227, 5, 20),
+                    primary: CustomColor.button,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -63,18 +72,24 @@ class Home extends StatelessWidget {
           ],
         )),
         bottomNavigationBar: Container(
-          height: 100.0,
-          padding: const EdgeInsets.only(left: 20.0),
-          decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 174, 15, 11),
-              boxShadow: [BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))]),
-          child: Row(
-            children: const [
-              Image(
-            image: AssetImage('assets/logosmall.png'), isAntiAlias: true, filterQuality: FilterQuality.high, height: 50.0,),
-            ],
-          )
-        ));
+            height: 56.0,
+            padding: const EdgeInsets.only(left: 10.0),
+            decoration: BoxDecoration(
+                color: CustomColor.primary,
+                boxShadow: const [
+                  BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))
+                ]),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  child: const Image(
+                    image: AssetImage('assets/logosmall.png'),
+                    filterQuality: FilterQuality.high,
+                  ),
+                ),
+              ],
+            )));
   }
 }
 

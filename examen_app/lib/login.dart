@@ -1,4 +1,5 @@
 import 'package:examen_app/admin_start.dart';
+import 'package:examen_app/colors.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -15,7 +16,6 @@ class _LoginState extends State<Login> {
   void _login() {
     setState(() {
       errortext = null;
-      print({"Login met wachtwoord $password"});
 
       if (password == null || password == "") {
         errortext = "Dit veld mag niet leeg zijn";
@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Examen App')),
-          backgroundColor: const Color.fromARGB(255, 174, 15, 11),
+          backgroundColor: CustomColor.primary,
         ),
         body: Center(
             child: Column(
@@ -49,15 +49,14 @@ class _LoginState extends State<Login> {
                 child: TextField(
                   onChanged: (value) => password = value,
                   obscureText: true,
-                  cursorColor: const Color.fromARGB(255, 227, 5, 20),
+                  cursorColor: CustomColor.button,
                   decoration: InputDecoration(
                     labelText: 'Wachtwoord',
                     errorText: errortext,
                     labelStyle: const TextStyle(color: Colors.black),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 227, 5, 20)),
+                      borderSide: BorderSide(color: CustomColor.button),
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -65,16 +64,16 @@ class _LoginState extends State<Login> {
                   ),
                 )),
             Container(
-              width: 500.0,
-              height: 100.0,
+              width: 250.0,
+              height: 90.0,
               margin: const EdgeInsets.symmetric(horizontal: 100.0),
               child: ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                      primary: const Color.fromARGB(255, 227, 5, 20),
+                      primary: CustomColor.button,
                       onPrimary: Colors.white,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100)),
+                          borderRadius: BorderRadius.circular(90)),
                       padding: const EdgeInsets.all(8.0),
                       elevation: 5),
                   child: const Text(
@@ -85,17 +84,23 @@ class _LoginState extends State<Login> {
           ],
         )),
         bottomNavigationBar: Container(
-          height: 100.0,
-          padding: const EdgeInsets.only(left: 20.0),
-          decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 174, 15, 11),
-              boxShadow: [BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))]),
-          child: Row(
-            children: const [
-              Image(
-            image: AssetImage('assets/logosmall.png'), isAntiAlias: true, filterQuality: FilterQuality.high, height: 50.0,),
-            ],
-          )
-        ));
+            height: 56.0,
+            padding: const EdgeInsets.only(left: 20.0),
+            decoration: BoxDecoration(
+                color: CustomColor.primary,
+                boxShadow: const [
+                  BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))
+                ]),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  child: const Image(
+                    image: AssetImage('assets/logosmall.png'),
+                    filterQuality: FilterQuality.high,
+                  ),
+                ),
+              ],
+            )));
   }
 }

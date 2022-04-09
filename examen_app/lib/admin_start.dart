@@ -1,4 +1,5 @@
 import 'package:examen_app/changepassword.dart';
+import 'package:examen_app/colors.dart';
 import 'package:examen_app/home.dart';
 import 'package:flutter/material.dart';
 
@@ -32,17 +33,18 @@ class _AdminStart extends State<AdminStart> {
           children: [
             Container(
                 width: 100.0,
-                height: 57.0,
+                height: 56.0,
                 padding: const EdgeInsets.only(left: 10.0),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 174, 15, 11),
+                decoration: BoxDecoration(
+                  color: CustomColor.primary,
                 ),
-                child: const Image(
-                  image: AssetImage('assets/logosmall.png'), 
-                  isAntiAlias: true, 
-                  filterQuality: FilterQuality.high,
-                )
-            ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  child: const Image(
+                    image: AssetImage('assets/logosmall.png'),
+                    filterQuality: FilterQuality.high,
+                  ),
+                )),
             Expanded(
               child: BottomNavigationBar(
                 elevation: 0,
@@ -61,16 +63,16 @@ class _AdminStart extends State<AdminStart> {
                   ),
                 ],
                 currentIndex: _selectedIndex,
-                backgroundColor: const Color.fromARGB(255, 174, 15, 11),
+                backgroundColor: CustomColor.primary,
                 selectedItemColor: Colors.white,
                 onTap: _onItemTapped,
               ),
             ),
             Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 174, 15, 11),
+              decoration: BoxDecoration(
+                color: CustomColor.primary,
               ),
-              height: 57.0,
+              height: 56.0,
               width: 100.0,
               child: TextButton(
                   onPressed: () {

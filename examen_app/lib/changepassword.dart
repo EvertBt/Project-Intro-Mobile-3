@@ -1,3 +1,4 @@
+import 'package:examen_app/colors.dart';
 import 'package:flutter/material.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -69,6 +70,9 @@ class _ChangePassword extends State<ChangePassword> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            padding: const EdgeInsets.only(top: 50.0),
+          ),
           InputField(
             labelText: "Oud wachtwoord",
             errorText: oldPwErrortext,
@@ -88,7 +92,7 @@ class _ChangePassword extends State<ChangePassword> {
             controller: confirmNewPwController,
           ),
           Container(
-            height: 30,
+            height: 20,
             margin: const EdgeInsets.only(bottom: 20.0),
             child: Text(
               successMessage,
@@ -99,13 +103,13 @@ class _ChangePassword extends State<ChangePassword> {
             ),
           ),
           Container(
-            width: 400.0,
-            height: 90.0,
+            width: 350.0,
+            height: 70.0,
             margin: const EdgeInsets.symmetric(horizontal: 100.0),
             child: ElevatedButton(
                 onPressed: _change,
                 style: ElevatedButton.styleFrom(
-                    primary: const Color.fromARGB(255, 227, 5, 20),
+                    primary: CustomColor.button,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100)),
@@ -127,26 +131,32 @@ class InputField extends StatelessWidget {
       {required this.labelText,
       required this.errorText,
       required this.onChanged,
-      required this.controller,
+      this.controller,
+      this.width = 500.0,
+      this.height = 110.0,
+      this.obscureText = true,
       Key? key})
       : super(key: key);
 
   final String labelText;
   final void Function(String)? onChanged;
   final String? errorText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final double width;
+  final double height;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 500.0,
-        height: 110.0,
+        width: width,
+        height: height,
         margin: const EdgeInsets.symmetric(horizontal: 10.0),
         child: TextField(
           controller: controller,
           onChanged: onChanged,
-          obscureText: true,
-          cursorColor: const Color.fromARGB(255, 227, 5, 20),
+          obscureText: obscureText,
+          cursorColor: CustomColor.button,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(12, 24, 12, 20),
             labelText: labelText,
@@ -154,8 +164,7 @@ class InputField extends StatelessWidget {
             labelStyle: const TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  const BorderSide(color: Color.fromARGB(255, 227, 5, 20)),
+              borderSide: BorderSide(color: CustomColor.button),
             ),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

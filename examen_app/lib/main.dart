@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     const MaterialApp(
-      title: 'Flutter Tutorial',
+      debugShowCheckedModeBanner: false,
+      title: 'Examen App',
       home: Home(),
     ),
   );
