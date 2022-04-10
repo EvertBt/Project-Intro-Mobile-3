@@ -125,10 +125,11 @@ class _StudentHome extends State<StudentHome> {
                                 width: 600,
                                 height: 90,
                                 margin: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
+                                    horizontal: 15.0),
                                 child: TextField(
                                   controller: _controller,
-                                  onChanged: (value) => searchText = value,
+                                  onChanged: (value) =>
+                                      {searchText = value, _searchStudent()},
                                   cursorColor: CustomColor.button,
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.fromLTRB(
@@ -157,27 +158,6 @@ class _StudentHome extends State<StudentHome> {
                                           ),
                                   ),
                                 ))),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        margin: const EdgeInsets.only(right: 15.0),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              _searchStudent();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: CustomColor.button,
-                              onPrimary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              padding: const EdgeInsets.all(0.0),
-                              elevation: 5,
-                            ),
-                            child: const Icon(
-                              Icons.search,
-                              size: 35,
-                            )),
                       ),
                     ],
                   ),
