@@ -1,4 +1,4 @@
-import 'package:examen_app/colors.dart';
+import 'package:examen_app/config/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';

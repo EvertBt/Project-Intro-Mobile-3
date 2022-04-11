@@ -1,7 +1,7 @@
-import 'package:examen_app/authentication.dart';
+import 'package:examen_app/firebase/authentication.dart';
 
-import 'package:examen_app/admin_start.dart';
-import 'package:examen_app/colors.dart';
+import 'package:examen_app/views/admin_start.dart';
+import 'package:examen_app/config/colors.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {

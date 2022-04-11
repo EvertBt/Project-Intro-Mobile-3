@@ -1,6 +1,6 @@
-import 'package:examen_app/changepassword.dart';
-import 'package:examen_app/colors.dart';
-import 'package:examen_app/home.dart';
+import 'package:examen_app/views/changepassword.dart';
+import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/views/home.dart';
 import 'package:flutter/material.dart';
 
 class AdminStart extends StatefulWidget {

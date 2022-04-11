@@ -1,6 +1,6 @@
-import 'package:examen_app/colors.dart';
-import 'package:examen_app/login.dart';
-import 'package:examen_app/student_home.dart';
+import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/views/login.dart';
+import 'package:examen_app/views/student_home.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
