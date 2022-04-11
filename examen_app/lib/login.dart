@@ -31,17 +31,19 @@ class _LoginState extends State<Login> {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    var document =
-        await FirebaseFirestore.instance.doc('authentication/admin').get();
+    var result = await FirebaseFirestore.instance
+        .collection('authadmin')
+        .where('value', isEqualTo: password)
+        .get();
 
-    return password == document.data()?["password"].toString();
+    return result.docs.isNotEmpty;
   }
 
   void _login() async {
     errortext = null;
 
-    bool correctPassword =
-        await _authenticate(_generatehash(password: password));
+    String passwordhash = _generatehash(password: password);
+    bool correctPassword = await _authenticate(passwordhash);
 
     if (password == "") {
       errortext = "Dit veld mag niet leeg zijn";

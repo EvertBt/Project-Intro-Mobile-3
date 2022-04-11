@@ -11,7 +11,11 @@ class Home extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Center(child: Text('Examen App')),
+          title: const Center(
+              child: Text(
+            'Home',
+            style: TextStyle(fontSize: 30),
+          )),
           backgroundColor: CustomColor.primary,
         ),
         body: Center(

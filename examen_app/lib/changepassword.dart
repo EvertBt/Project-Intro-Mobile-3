@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 
 import 'package:examen_app/colors.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -16,7 +20,7 @@ class _ChangePassword extends State<ChangePassword> {
   final newPwController = TextEditingController();
   final confirmNewPwController = TextEditingController();
 
-  String? oldPassword;
+  String oldPassword = "";
   String newPassword = "";
   String? confirmNewPassword;
 
@@ -31,46 +35,69 @@ class _ChangePassword extends State<ChangePassword> {
     return sha256.convert(bytes).toString();
   }
 
-  void _changePassword() {
-    setState(() {
-      oldPwErrortext = null;
-      newPwErrortext = null;
-      confirmNewPwErrortext = null;
-      successMessage = "";
+  //Update wachtwoord
+  Future<void> _updatePassword(String newPassword) async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-      if (newPassword != confirmNewPassword) {
-        confirmNewPwErrortext = "Oud en nieuw wachtwoord komen niet overeen";
-      }
-      if (newPassword == null || newPassword == "") {
-        newPwErrortext = "Dit veld mag niet leeg zijn";
-      }
-      if (confirmNewPassword == null || confirmNewPassword == "") {
-        confirmNewPwErrortext = "Dit veld mag niet leeg zijn";
-      }
-      if (oldPassword == null || oldPassword == "") {
-        oldPwErrortext = "Dit veld mag niet leeg zijn";
-      }
+    await FirebaseFirestore.instance
+        .doc('authadmin/password')
+        .update({'value': newPassword});
+  }
 
-      //FireBase wachtwoord ophalen
-      else if (oldPassword != "password") {
-        oldPwErrortext = "Fout wachtwoord";
-      } else if (oldPassword == "password" &&
-          newPassword == confirmNewPassword &&
-          newPassword != "" &&
-          newPassword != "") {
-        oldPwController.clear();
-        newPwController.clear();
-        confirmNewPwController.clear();
+  //check wachtwoord
+  Future<bool> _authenticate(String? password) async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-        print(_generatehash(password: newPassword));
-        //update wachtwoord in firestore
+    var result = await FirebaseFirestore.instance
+        .collection('authadmin')
+        .where('value', isEqualTo: password)
+        .get();
 
-        oldPassword = null;
-        newPassword = "";
-        confirmNewPassword = null;
-        successMessage = "Wachtwoord succesvol gewijzigd";
-      }
-    });
+    return result.docs.isNotEmpty;
+  }
+
+  void _changePassword() async {
+    oldPwErrortext = null;
+    newPwErrortext = null;
+    confirmNewPwErrortext = null;
+    successMessage = "";
+
+    bool correctPassword =
+        await _authenticate(_generatehash(password: oldPassword));
+
+    if (newPassword != confirmNewPassword) {
+      confirmNewPwErrortext = "Oud en nieuw wachtwoord komen niet overeen";
+    }
+    if (newPassword == "") {
+      newPwErrortext = "Dit veld mag niet leeg zijn";
+    }
+    if (confirmNewPassword == null || confirmNewPassword == "") {
+      confirmNewPwErrortext = "Dit veld mag niet leeg zijn";
+    }
+    if (oldPassword == "") {
+      oldPwErrortext = "Dit veld mag niet leeg zijn";
+    } else if (!correctPassword) {
+      oldPwErrortext = "Fout wachtwoord";
+    } else if (correctPassword &&
+        newPassword == confirmNewPassword &&
+        newPassword != "" &&
+        newPassword != "") {
+      oldPwController.clear();
+      newPwController.clear();
+      confirmNewPwController.clear();
+
+      await _updatePassword(_generatehash(password: newPassword));
+
+      oldPassword = "";
+      newPassword = "";
+      confirmNewPassword = null;
+      successMessage = "Wachtwoord succesvol gewijzigd";
+    }
+    setState(() {});
   }
 
   @override

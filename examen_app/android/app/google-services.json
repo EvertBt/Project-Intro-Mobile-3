@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:142042336021:android:cc645b1e80dcac6dc1371c",
+        "mobilesdk_app_id": "1:142042336021:android:2372ddf3390b40abc1371c",
         "android_client_info": {
-          "package_name": "com.example.examen_app"
+          "package_name": "edu.ap.gradeapp"
         }
       },
       "oauth_client": [
