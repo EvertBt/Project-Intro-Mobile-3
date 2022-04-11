@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "142042336021",
+    "project_id": "grade-app-backend",
+    "storage_bucket": "grade-app-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142042336021:android:cc645b1e80dcac6dc1371c",
+        "android_client_info": {
+          "package_name": "com.example.examen_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142042336021-nqh1dien59uqnd982osn9cqbf6dhf3cp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDpjXPcC7L_2ijpIXjkzFlOo2TAfYP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142042336021-nqh1dien59uqnd982osn9cqbf6dhf3cp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

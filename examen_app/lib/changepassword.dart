@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 import 'package:examen_app/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +17,7 @@ class _ChangePassword extends State<ChangePassword> {
   final confirmNewPwController = TextEditingController();
 
   String? oldPassword;
-  String? newPassword;
+  String newPassword = "";
   String? confirmNewPassword;
 
   String? oldPwErrortext;
@@ -23,7 +26,12 @@ class _ChangePassword extends State<ChangePassword> {
 
   String successMessage = "";
 
-  void _change() {
+  String _generatehash({String password = ""}) {
+    var bytes = utf8.encode(password);
+    return sha256.convert(bytes).toString();
+  }
+
+  void _changePassword() {
     setState(() {
       oldPwErrortext = null;
       newPwErrortext = null;
@@ -48,16 +56,19 @@ class _ChangePassword extends State<ChangePassword> {
         oldPwErrortext = "Fout wachtwoord";
       } else if (oldPassword == "password" &&
           newPassword == confirmNewPassword &&
-          newPassword != null &&
+          newPassword != "" &&
           newPassword != "") {
         oldPwController.clear();
         newPwController.clear();
         confirmNewPwController.clear();
+
+        print(_generatehash(password: newPassword));
+        //update wachtwoord in firestore
+
         oldPassword = null;
-        newPassword = null;
+        newPassword = "";
         confirmNewPassword = null;
         successMessage = "Wachtwoord succesvol gewijzigd";
-        //Nieuw wachtwoord in firebase opslagen
       }
     });
   }
@@ -107,7 +118,7 @@ class _ChangePassword extends State<ChangePassword> {
             height: 70.0,
             margin: const EdgeInsets.symmetric(horizontal: 100.0),
             child: ElevatedButton(
-                onPressed: _change,
+                onPressed: _changePassword,
                 style: ElevatedButton.styleFrom(
                     primary: CustomColor.button,
                     onPrimary: Colors.white,
