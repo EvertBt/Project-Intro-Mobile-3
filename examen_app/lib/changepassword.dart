@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
+import 'package:examen_app/authentication.dart';
 
 import 'package:examen_app/colors.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'firebase_options.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -30,44 +25,13 @@ class _ChangePassword extends State<ChangePassword> {
 
   String successMessage = "";
 
-  String _generatehash({String password = ""}) {
-    var bytes = utf8.encode(password);
-    return sha256.convert(bytes).toString();
-  }
-
-  //Update wachtwoord
-  Future<void> _updatePassword(String newPassword) async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    await FirebaseFirestore.instance
-        .doc('authadmin/password')
-        .update({'value': newPassword});
-  }
-
-  //check wachtwoord
-  Future<bool> _authenticate(String? password) async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    var result = await FirebaseFirestore.instance
-        .collection('authadmin')
-        .where('value', isEqualTo: password)
-        .get();
-
-    return result.docs.isNotEmpty;
-  }
-
   void _changePassword() async {
     oldPwErrortext = null;
     newPwErrortext = null;
     confirmNewPwErrortext = null;
     successMessage = "";
 
-    bool correctPassword =
-        await _authenticate(_generatehash(password: oldPassword));
+    bool correctPassword = await Authenticator.authenticate(oldPassword);
 
     if (newPassword != confirmNewPassword) {
       confirmNewPwErrortext = "Oud en nieuw wachtwoord komen niet overeen";
@@ -90,7 +54,7 @@ class _ChangePassword extends State<ChangePassword> {
       newPwController.clear();
       confirmNewPwController.clear();
 
-      await _updatePassword(_generatehash(password: newPassword));
+      await Authenticator.updatePassword(newPassword);
 
       oldPassword = "";
       newPassword = "";

@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:crypto/crypto.dart';
+import 'package:examen_app/authentication.dart';
 
 import 'package:examen_app/admin_start.dart';
 import 'package:examen_app/colors.dart';
 import 'package:flutter/material.dart';
-
-import 'firebase_options.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -20,30 +15,10 @@ class _LoginState extends State<Login> {
   String password = "";
   String? errortext;
 
-  String _generatehash({String password = ""}) {
-    var bytes = utf8.encode(password);
-    return sha256.convert(bytes).toString();
-  }
-
-  //Firebase communicatie
-  Future<bool> _authenticate(String? password) async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    var result = await FirebaseFirestore.instance
-        .collection('authadmin')
-        .where('value', isEqualTo: password)
-        .get();
-
-    return result.docs.isNotEmpty;
-  }
-
   void _login() async {
     errortext = null;
 
-    String passwordhash = _generatehash(password: password);
-    bool correctPassword = await _authenticate(passwordhash);
+    bool correctPassword = await Authenticator.authenticate(password);
 
     if (password == "") {
       errortext = "Dit veld mag niet leeg zijn";
