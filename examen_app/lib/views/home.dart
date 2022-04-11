@@ -76,8 +76,9 @@ class Home extends StatelessWidget {
           ],
         )),
         bottomNavigationBar: Container(
+            width: double.infinity,
             height: 56.0,
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 20.0),
             decoration: BoxDecoration(
                 color: CustomColor.primary,
                 boxShadow: const [

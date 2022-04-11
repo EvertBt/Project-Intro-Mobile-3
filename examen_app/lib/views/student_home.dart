@@ -25,8 +25,6 @@ class _StudentHome extends State<StudentHome> {
   final List<String> _searchStudents = <String>[];
   final TextEditingController _controller = TextEditingController();
 
-  String searchText = "";
-
   @override
   void initState() {
     super.initState();
@@ -40,7 +38,7 @@ class _StudentHome extends State<StudentHome> {
     });
   }
 
-  void _searchStudent() {
+  void _searchStudent(String searchText) {
     setState(() {
       _searchStudents.clear();
       for (String student in _students) {
@@ -56,8 +54,7 @@ class _StudentHome extends State<StudentHome> {
 
   void _clearTextField() {
     _controller.clear();
-    searchText = "";
-    _searchStudent();
+    _searchStudent("");
   }
 
   Widget _buildRow(int i) {
@@ -127,8 +124,7 @@ class _StudentHome extends State<StudentHome> {
                                     horizontal: 15.0),
                                 child: TextField(
                                   controller: _controller,
-                                  onChanged: (value) =>
-                                      {searchText = value, _searchStudent()},
+                                  onChanged: (value) => {_searchStudent(value)},
                                   cursorColor: CustomColor.button,
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.fromLTRB(
