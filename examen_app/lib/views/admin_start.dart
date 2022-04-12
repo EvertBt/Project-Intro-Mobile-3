@@ -1,6 +1,5 @@
 import 'package:examen_app/views/changepassword.dart';
 import 'package:examen_app/config/constants.dart';
-import 'package:examen_app/views/home.dart';
 import 'package:flutter/material.dart';
 
 class AdminStart extends StatefulWidget {
@@ -26,66 +25,73 @@ class _AdminStart extends State<AdminStart> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                width: 100.0,
-                height: 56.0,
-                padding: const EdgeInsets.only(left: 10.0),
-                decoration: const BoxDecoration(
-                  color: primaryColor,
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(homeRoute, (route) => false);
+          return false;
+        },
+        child: Scaffold(
+            body: _widgetOptions.elementAt(_selectedIndex),
+            bottomNavigationBar: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                    width: 100.0,
+                    height: 56.0,
+                    padding: const EdgeInsets.only(left: 10.0),
+                    decoration: const BoxDecoration(
+                      color: primaryColor,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 13.0),
+                      child: const Image(
+                        image: AssetImage('assets/logosmall.png'),
+                        filterQuality: FilterQuality.high,
+                      ),
+                    )),
+                Expanded(
+                  child: BottomNavigationBar(
+                    elevation: 0,
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.people),
+                        label: 'Studenten',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.book),
+                        label: 'Examen',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.lock),
+                        label: 'Wachtwoord wijzigen',
+                      ),
+                    ],
+                    currentIndex: _selectedIndex,
+                    backgroundColor: primaryColor,
+                    selectedItemColor: Colors.white,
+                    onTap: _onItemTapped,
+                  ),
                 ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 13.0),
-                  child: const Image(
-                    image: AssetImage('assets/logosmall.png'),
-                    filterQuality: FilterQuality.high,
+                Container(
+                  decoration: const BoxDecoration(
+                    color: primaryColor,
                   ),
-                )),
-            Expanded(
-              child: BottomNavigationBar(
-                elevation: 0,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.people),
-                    label: 'Studenten',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.book),
-                    label: 'Examen',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.lock),
-                    label: 'Wachtwoord wijzigen',
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                backgroundColor: primaryColor,
-                selectedItemColor: Colors.white,
-                onTap: _onItemTapped,
-              ),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                color: primaryColor,
-              ),
-              height: 56.0,
-              width: 100.0,
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, homeRoute);
-                  },
-                  style: TextButton.styleFrom(primary: Colors.white),
-                  child: const Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: 35,
-                  )),
-            )
-          ],
-        ));
+                  height: 56.0,
+                  width: 100.0,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            homeRoute, (route) => false);
+                      },
+                      style: TextButton.styleFrom(primary: Colors.white),
+                      child: const Icon(
+                        Icons.home,
+                        color: Colors.white,
+                        size: 35,
+                      )),
+                )
+              ],
+            )));
   }
 }

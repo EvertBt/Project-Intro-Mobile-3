@@ -1,6 +1,5 @@
 import 'package:examen_app/firebase/authentication.dart';
 
-import 'package:examen_app/views/admin_start.dart';
 import 'package:examen_app/config/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +24,8 @@ class _LoginState extends State<Login> {
     } else if (!correctPassword) {
       errortext = "Fout wachtwoord";
     } else if (correctPassword) {
-      Navigator.pushNamed(context, adminStartRoute);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(adminStartRoute, (route) => false);
     }
     setState(() {});
   }
@@ -34,7 +34,11 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text('Examen App')),
+          title: const Text(
+            'Admin Login',
+            style: TextStyle(fontSize: 30),
+          ),
+          centerTitle: true,
           backgroundColor: primaryColor,
         ),
         body: Center(

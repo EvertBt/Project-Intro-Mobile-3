@@ -11,3 +11,4 @@ const String loginRoute = '/login';
 const String studentHomeRoute = '/studenthome';
 const String adminStartRoute = '/adminstart';
 const String changePasswordRoute = '/changepassword';
+const String studentExamRoute = '/studentexam';

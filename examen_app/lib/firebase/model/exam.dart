@@ -1,8 +1,9 @@
 import 'package:examen_app/firebase/model/question.dart';
 
 class Exam {
-  Exam(this.duration, this.questions);
+  Exam({this.duration, this.questions, this.title = ""});
 
-  Duration duration;
-  List<Question> questions;
+  String title;
+  Duration? duration;
+  List<Question>? questions;
 }
