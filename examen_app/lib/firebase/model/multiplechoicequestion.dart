@@ -1,7 +1,7 @@
 import 'package:examen_app/firebase/model/question.dart';
 
 class MultipleChoiceQuestion implements Question {
-  MultipleChoiceQuestion({this.question, this.choices, this.answer = ""});
+  MultipleChoiceQuestion({this.question, this.options, this.answer = ''});
 
   @override
   String answer;
@@ -9,5 +9,5 @@ class MultipleChoiceQuestion implements Question {
   @override
   String? question;
 
-  List<String>? choices;
+  List<String>? options;
 }

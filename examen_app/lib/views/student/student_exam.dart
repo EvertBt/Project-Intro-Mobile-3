@@ -2,8 +2,8 @@ import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/question.dart';
 import 'package:flutter/material.dart';
-import '../firebase/model/exam.dart';
-import '../firebase/model/student.dart';
+import '../../firebase/model/exam.dart';
+import '../../firebase/model/student.dart';
 
 enum ExamState { questionOverview, question }
 
