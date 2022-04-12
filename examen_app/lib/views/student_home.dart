@@ -1,4 +1,5 @@
-import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/config/constants.dart';
+import 'package:examen_app/firebase/model/student.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -11,18 +12,18 @@ class StudentHome extends StatefulWidget {
 }
 
 class _StudentHome extends State<StudentHome> {
-  final List<String> _students = <String>[
-    "s115247",
-    "s123456",
-    "s235645",
-    "s573526",
-    "s134592",
-    "s482648",
-    "s283755",
-    "s125238"
+  final List<Student> _students = <Student>[
+    Student(studentNr: "s115247"),
+    Student(studentNr: "s123456"),
+    Student(studentNr: "s235645"),
+    Student(studentNr: "s573526"),
+    Student(studentNr: "s134592"),
+    Student(studentNr: "s482648"),
+    Student(studentNr: "s283755"),
+    Student(studentNr: "s125238")
   ];
 
-  final List<String> _searchStudents = <String>[];
+  final List<Student> _searchStudents = <Student>[];
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -41,8 +42,8 @@ class _StudentHome extends State<StudentHome> {
   void _searchStudent(String searchText) {
     setState(() {
       _searchStudents.clear();
-      for (String student in _students) {
-        if (student.contains(searchText)) {
+      for (Student student in _students) {
+        if (student.studentNr.contains(searchText)) {
           _searchStudents.add(student);
         }
       }
@@ -67,7 +68,7 @@ class _StudentHome extends State<StudentHome> {
             print("navigate to ${_searchStudents[i]}");
           },
           style: ElevatedButton.styleFrom(
-            primary: CustomColor.button,
+            primary: buttonColor,
             onPrimary: Colors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -75,7 +76,7 @@ class _StudentHome extends State<StudentHome> {
             elevation: 5,
           ),
           child: Text(
-            _searchStudents[i],
+            _searchStudents[i].studentNr,
             style: const TextStyle(fontSize: 30.0),
           )),
     );
@@ -91,7 +92,7 @@ class _StudentHome extends State<StudentHome> {
             'Studenten',
             style: TextStyle(fontSize: 30.0),
           )),
-          backgroundColor: CustomColor.primary,
+          backgroundColor: primaryColor,
         ),
         body: Center(
           child: Container(
@@ -125,7 +126,7 @@ class _StudentHome extends State<StudentHome> {
                                 child: TextField(
                                   controller: _controller,
                                   onChanged: (value) => {_searchStudent(value)},
-                                  cursorColor: CustomColor.button,
+                                  cursorColor: buttonColor,
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.fromLTRB(
                                         12, 24, 12, 20),
@@ -136,7 +137,7 @@ class _StudentHome extends State<StudentHome> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide:
-                                          BorderSide(color: CustomColor.button),
+                                          const BorderSide(color: buttonColor),
                                     ),
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
@@ -145,9 +146,9 @@ class _StudentHome extends State<StudentHome> {
                                     suffixIcon: _controller.text.isEmpty
                                         ? null
                                         : IconButton(
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.clear,
-                                              color: CustomColor.button,
+                                              color: buttonColor,
                                             ),
                                             onPressed: _clearTextField,
                                           ),
@@ -177,8 +178,8 @@ class _StudentHome extends State<StudentHome> {
                 width: 100.0,
                 height: 56.0,
                 padding: const EdgeInsets.only(left: 10.0),
-                decoration: BoxDecoration(
-                  color: CustomColor.primary,
+                decoration: const BoxDecoration(
+                  color: primaryColor,
                 ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 13.0),
@@ -190,19 +191,18 @@ class _StudentHome extends State<StudentHome> {
             Expanded(
               child: Container(
                 height: 56.0,
-                decoration: BoxDecoration(color: CustomColor.primary),
+                decoration: const BoxDecoration(color: primaryColor),
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                color: CustomColor.primary,
+              decoration: const BoxDecoration(
+                color: primaryColor,
               ),
               height: 56.0,
               width: 100.0,
               child: TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Home()));
+                    Navigator.pushNamed(context, homeRoute);
                   },
                   style: TextButton.styleFrom(primary: Colors.white),
                   child: const Icon(

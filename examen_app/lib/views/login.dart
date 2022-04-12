@@ -1,7 +1,7 @@
 import 'package:examen_app/firebase/authentication.dart';
 
 import 'package:examen_app/views/admin_start.dart';
-import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/config/constants.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -25,8 +25,7 @@ class _LoginState extends State<Login> {
     } else if (!correctPassword) {
       errortext = "Fout wachtwoord";
     } else if (correctPassword) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const AdminStart()));
+      Navigator.pushNamed(context, adminStartRoute);
     }
     setState(() {});
   }
@@ -36,7 +35,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Examen App')),
-          backgroundColor: CustomColor.primary,
+          backgroundColor: primaryColor,
         ),
         body: Center(
             child: Column(
@@ -50,14 +49,14 @@ class _LoginState extends State<Login> {
                 child: TextField(
                   onChanged: (value) => password = value,
                   obscureText: true,
-                  cursorColor: CustomColor.button,
+                  cursorColor: buttonColor,
                   decoration: InputDecoration(
                     labelText: 'Wachtwoord',
                     errorText: errortext,
                     labelStyle: const TextStyle(color: Colors.black),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: CustomColor.button),
+                      borderSide: const BorderSide(color: buttonColor),
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -71,7 +70,7 @@ class _LoginState extends State<Login> {
               child: ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                      primary: CustomColor.button,
+                      primary: buttonColor,
                       onPrimary: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(90)),
@@ -87,11 +86,12 @@ class _LoginState extends State<Login> {
         bottomNavigationBar: Container(
             height: 56.0,
             padding: const EdgeInsets.only(left: 20.0),
-            decoration: BoxDecoration(
-                color: CustomColor.primary,
-                boxShadow: const [
-                  BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))
-                ]),
+            decoration: const BoxDecoration(color: primaryColor, boxShadow: [
+              BoxShadow(
+                blurRadius: 6.0,
+                offset: Offset(0, 2.0),
+              )
+            ]),
             child: Row(
               children: [
                 Container(

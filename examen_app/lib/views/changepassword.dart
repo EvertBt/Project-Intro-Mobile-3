@@ -1,6 +1,6 @@
 import 'package:examen_app/firebase/authentication.dart';
 
-import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/config/constants.dart';
 import 'package:flutter/material.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -111,7 +111,7 @@ class _ChangePassword extends State<ChangePassword> {
             child: ElevatedButton(
                 onPressed: _changePassword,
                 style: ElevatedButton.styleFrom(
-                    primary: CustomColor.button,
+                    primary: buttonColor,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100)),
@@ -158,7 +158,7 @@ class InputField extends StatelessWidget {
           controller: controller,
           onChanged: onChanged,
           obscureText: obscureText,
-          cursorColor: CustomColor.button,
+          cursorColor: buttonColor,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(12, 24, 12, 20),
             labelText: labelText,
@@ -166,7 +166,7 @@ class InputField extends StatelessWidget {
             labelStyle: const TextStyle(color: Colors.black),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: CustomColor.button),
+              borderSide: const BorderSide(color: buttonColor),
             ),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

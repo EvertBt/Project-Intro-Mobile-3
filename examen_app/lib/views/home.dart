@@ -1,10 +1,22 @@
-import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/views/login.dart';
 import 'package:examen_app/views/student_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  _Home createState() => _Home();
+}
+
+class _Home extends State<Home> {
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +28,7 @@ class Home extends StatelessWidget {
             'Home',
             style: TextStyle(fontSize: 30),
           )),
-          backgroundColor: CustomColor.primary,
+          backgroundColor: primaryColor,
         ),
         body: Center(
             child: Column(
@@ -30,13 +42,10 @@ class Home extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const StudentHome()));
+                    Navigator.pushNamed(context, studentHomeRoute);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: CustomColor.button,
+                    primary: buttonColor,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -55,13 +64,10 @@ class Home extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        NoAnimationMaterialPageRoute(
-                            builder: (context) => const Login()));
+                    Navigator.pushNamed(context, loginRoute);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: CustomColor.button,
+                    primary: buttonColor,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -79,11 +85,9 @@ class Home extends StatelessWidget {
             width: double.infinity,
             height: 56.0,
             padding: const EdgeInsets.only(left: 20.0),
-            decoration: BoxDecoration(
-                color: CustomColor.primary,
-                boxShadow: const [
-                  BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))
-                ]),
+            decoration: const BoxDecoration(color: primaryColor, boxShadow: [
+              BoxShadow(blurRadius: 6.0, offset: Offset(0, 2.0))
+            ]),
             child: Row(
               children: [
                 Container(

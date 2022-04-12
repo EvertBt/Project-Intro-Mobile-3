@@ -1,5 +1,5 @@
 import 'package:examen_app/views/changepassword.dart';
-import 'package:examen_app/config/colors.dart';
+import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/views/home.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +35,8 @@ class _AdminStart extends State<AdminStart> {
                 width: 100.0,
                 height: 56.0,
                 padding: const EdgeInsets.only(left: 10.0),
-                decoration: BoxDecoration(
-                  color: CustomColor.primary,
+                decoration: const BoxDecoration(
+                  color: primaryColor,
                 ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 13.0),
@@ -63,21 +63,20 @@ class _AdminStart extends State<AdminStart> {
                   ),
                 ],
                 currentIndex: _selectedIndex,
-                backgroundColor: CustomColor.primary,
+                backgroundColor: primaryColor,
                 selectedItemColor: Colors.white,
                 onTap: _onItemTapped,
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                color: CustomColor.primary,
+              decoration: const BoxDecoration(
+                color: primaryColor,
               ),
               height: 56.0,
               width: 100.0,
               child: TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Home()));
+                    Navigator.pushNamed(context, homeRoute);
                   },
                   style: TextButton.styleFrom(primary: Colors.white),
                   child: const Icon(
