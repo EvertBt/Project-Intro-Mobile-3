@@ -1,8 +1,6 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/exammanager.dart';
-import 'package:examen_app/firebase/model/codecorrectionquestion.dart';
 import 'package:examen_app/firebase/model/exam.dart';
-import 'package:examen_app/firebase/model/multiplechoicequestion.dart';
 import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/firebase/model/student.dart';
 import 'package:examen_app/views/student/exam/overview.dart';
@@ -44,26 +42,14 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void getData() async {
-    exam = await ExamManager.getExam();
-    apptitle = exam.title;
-    seedData();
-    questionCount = exam.questions!.length;
-    updateProgress();
-    if (!alreadyEntered()) {
-      startTimer();
-    }
-    setState(() {});
-  }
-
-  //TEMP
-  void seedData() {
-    exam.questions = <Question>[
-      Question(),
-      MultipleChoiceQuestion(),
-      Question(),
-      CodeCorrectionQuestion(),
-      Question(),
-    ];
+    await ExamManager.getExamFromStudent(widget.student).then((value) => {
+          exam = value,
+          apptitle = exam.title,
+          questionCount = exam.questions!.length,
+          updateProgress(),
+          if (!alreadyEntered()) {startTimer()},
+          setState(() {})
+        });
   }
 
   void startTimer() {
@@ -96,7 +82,6 @@ class _StudentExam extends State<StudentExam> {
     setState(() {});
   }
 
-//edit to work with firestore
   void handInExam() async {
     if (progress == 1) {
       widget.student.exam = exam;
@@ -119,11 +104,13 @@ class _StudentExam extends State<StudentExam> {
                   child: Container(),
                 ),
                 TextButton(
-                  onPressed: () => {
-                    Navigator.pop(context, 'Ja'),
-                    //await update student in firestore,
-                    _timer!.cancel(),
-                    Navigator.pushNamed(context, homeRoute)
+                  onPressed: () async => {
+                    await ExamManager.pushExamToStudent(exam, widget.student)
+                        .then((value) => {
+                              Navigator.pop(context, 'Ja'),
+                              _timer!.cancel(),
+                              Navigator.pushNamed(context, homeRoute)
+                            })
                   },
                   child: const Text('Ja'),
                   style: TextButton.styleFrom(
@@ -155,7 +142,6 @@ class _StudentExam extends State<StudentExam> {
     }
   }
 
-//edit to work with firestore
   void forceEndExam() async {
     widget.student.exam = exam;
     showDialog<String>(
@@ -171,10 +157,12 @@ class _StudentExam extends State<StudentExam> {
                     'Al je ingevulde vragen worden automatisch ingediend.\nJe zal het examen nu verlaten'),
                 actions: <Widget>[
                   TextButton(
-                    onPressed: () => {
-                      Navigator.pop(context, 'Ok'),
-                      //await update student in firestore,
-                      Navigator.pushNamed(context, homeRoute)
+                    onPressed: () async => {
+                      await ExamManager.pushExamToStudent(exam, widget.student)
+                          .then((value) => {
+                                Navigator.pop(context, 'Ok'),
+                                Navigator.pushNamed(context, homeRoute)
+                              })
                     },
                     child: const Text('Ok'),
                     style: TextButton.styleFrom(
@@ -251,6 +239,7 @@ class _StudentExam extends State<StudentExam> {
             context,
             apptitle,
             widget.student,
+            exam,
             progressText,
             progress,
             questionCount,

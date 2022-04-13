@@ -1,4 +1,5 @@
 import 'package:examen_app/config/constants.dart';
+import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/student.dart';
 import 'package:flutter/material.dart';
 
@@ -10,17 +11,7 @@ class StudentHome extends StatefulWidget {
 }
 
 class _StudentHome extends State<StudentHome> {
-  final List<Student> _students = <Student>[
-    Student(studentNr: "s115247"),
-    Student(studentNr: "s123456"),
-    Student(studentNr: "s235645"),
-    Student(studentNr: "s573526"),
-    Student(studentNr: "s134592"),
-    Student(studentNr: "s482648"),
-    Student(studentNr: "s283755"),
-    Student(studentNr: "s125238")
-  ];
-
+  final List<Student> _students = <Student>[];
   final List<Student> _searchStudents = <Student>[];
   final TextEditingController _controller = TextEditingController();
 
@@ -30,11 +21,13 @@ class _StudentHome extends State<StudentHome> {
     _loadData();
   }
 
-  void _loadData() {
-    setState(() {
-      //Load students from firebase and put in _students
-      _searchStudents.addAll(_students);
-    });
+  void _loadData() async {
+    await ExamManager.getStudents().then((value) => {
+          _students.addAll(value),
+          setState(() {
+            _searchStudents.addAll(_students);
+          })
+        });
   }
 
   void _searchStudent(String searchText) {

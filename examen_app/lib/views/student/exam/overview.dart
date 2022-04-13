@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:examen_app/config/constants.dart';
+import 'package:examen_app/firebase/exammanager.dart';
+import 'package:examen_app/firebase/model/exam.dart';
 import 'package:examen_app/firebase/model/student.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +10,7 @@ Widget overview(
     BuildContext context,
     String apptitle,
     Student student,
+    Exam exam,
     String progressText,
     double progress,
     int questionCount,
@@ -38,11 +41,14 @@ Widget overview(
                     child: Container(),
                   ),
                   TextButton(
-                    onPressed: () => {
-                      Navigator.pop(context, 'Begrepen, verlaat examen'),
-                      //await update student in firestore,
-                      _timer!.cancel(),
-                      Navigator.pushNamed(context, homeRoute)
+                    onPressed: () async => {
+                      await ExamManager.pushExamToStudent(exam, student)
+                          .then((value) => {
+                                Navigator.pop(
+                                    context, 'Begrepen, verlaat examen'),
+                                _timer!.cancel(),
+                                Navigator.pushNamed(context, homeRoute)
+                              }),
                     },
                     child: const Text('Begrepen, verlaat examen'),
                     style: TextButton.styleFrom(
