@@ -114,24 +114,19 @@ class ExamManager {
       Map<String, dynamic> questions, bool reviewMode) {
     List<Question> _questions = [];
     questions.forEach((key, value) {
-      if (value['type'] == 'open') {
-        _questions.add(
-          Question(
-              question: value['question'],
-              answer: reviewMode ? value['answer'] : ''),
-        );
-      } else if (value['type'] == "multiplechoice") {
-        _questions.add(MultipleChoiceQuestion(
+      Question question = Question(
+          score: value['score'],
           question: value['question'],
-          answer: reviewMode ? value['answer'] : '',
-          options: _buildOptionList(value['options']),
-        ));
+          answer: reviewMode ? value['answer'] : '');
+
+      if (value['type'] == 'open') {
+        _questions.add(question);
+      } else if (value['type'] == "multiplechoice") {
+        question = question as MultipleChoiceQuestion;
+        question.options = _buildOptionList(value['options']);
+        _questions.add(question);
       } else if (value['type'] == 'codecorrection') {
-        _questions.add(
-          CodeCorrectionQuestion(
-              question: value['question'],
-              answer: reviewMode ? value['answer'] : ''),
-        );
+        _questions.add(question as CodeCorrectionQuestion);
       }
     });
     return _questions;
@@ -155,6 +150,7 @@ class ExamManager {
             'type': 'multiplechoice',
             'question': question.question,
             'answer': forStudent ? '' : question.answer,
+            'score': question.score,
             'options': _buildOptionsMap(question)
           }
         }.entries);
@@ -164,6 +160,7 @@ class ExamManager {
             'type': 'codecorrection',
             'question': question.question,
             'answer': forStudent ? '' : question.answer,
+            'score': question.score,
           }
         }.entries);
       } else {
@@ -172,6 +169,7 @@ class ExamManager {
             'type': 'open',
             'question': question.question,
             'answer': forStudent ? '' : question.answer,
+            'score': question.score,
           }
         }.entries);
       }

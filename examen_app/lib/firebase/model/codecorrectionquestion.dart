@@ -2,7 +2,10 @@ import 'package:examen_app/firebase/model/question.dart';
 
 class CodeCorrectionQuestion implements Question {
   CodeCorrectionQuestion(
-      {this.question = '', this.type = 'codecorrection', this.answer = ''});
+      {this.question = '',
+      this.score = 0,
+      this.type = 'codecorrection',
+      this.answer = ''});
 
   @override
   String answer;
@@ -12,4 +15,7 @@ class CodeCorrectionQuestion implements Question {
 
   @override
   String type;
+
+  @override
+  int score;
 }
