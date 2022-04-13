@@ -1,11 +1,11 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/student.dart';
-import 'package:examen_app/views/admin_start.dart';
-import 'package:examen_app/views/changepassword.dart';
+import 'package:examen_app/views/admin/admin_start.dart';
+import 'package:examen_app/views/admin/changepassword.dart';
 import 'package:examen_app/views/home.dart';
-import 'package:examen_app/views/login.dart';
-import 'package:examen_app/views/student_exam.dart';
-import 'package:examen_app/views/student_home.dart';
+import 'package:examen_app/views/admin/login.dart';
+import 'package:examen_app/views/student/exam/student_exam.dart';
+import 'package:examen_app/views/student/student_home.dart';
 import 'package:flutter/material.dart';
 
 class CustomRouter {

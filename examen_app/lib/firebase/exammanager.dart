@@ -15,7 +15,10 @@ class ExamManager {
     await _initialize();
 
     var result = await FirebaseFirestore.instance.doc('exams/exam').get();
-    Exam exam = Exam(title: result.data()!['title'].toString());
+    Exam exam = Exam(
+        title: result.data()!['title'].toString(),
+        duration: Duration(
+            seconds: int.parse(result.data()!['duration'].toString())));
 
     return exam;
   }

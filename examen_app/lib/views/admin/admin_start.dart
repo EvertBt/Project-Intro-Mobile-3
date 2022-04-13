@@ -1,4 +1,4 @@
-import 'package:examen_app/views/changepassword.dart';
+import 'package:examen_app/views/admin/changepassword.dart';
 import 'package:examen_app/config/constants.dart';
 import 'package:flutter/material.dart';
 
