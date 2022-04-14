@@ -115,6 +115,7 @@ class ExamManager {
     List<Question> _questions = [];
     questions.forEach((key, value) {
       Question question = Question(
+          maxScore: value['maxscore'],
           score: value['score'],
           question: value['question'],
           answer: reviewMode ? value['answer'] : '');
@@ -150,6 +151,7 @@ class ExamManager {
             'type': 'multiplechoice',
             'question': question.question,
             'answer': forStudent ? '' : question.answer,
+            'maxscore': question.maxScore,
             'score': question.score,
             'options': _buildOptionsMap(question)
           }
@@ -160,6 +162,7 @@ class ExamManager {
             'type': 'codecorrection',
             'question': question.question,
             'answer': forStudent ? '' : question.answer,
+            'maxscore': question.maxScore,
             'score': question.score,
           }
         }.entries);
@@ -169,6 +172,7 @@ class ExamManager {
             'type': 'open',
             'question': question.question,
             'answer': forStudent ? '' : question.answer,
+            'maxscore': question.maxScore,
             'score': question.score,
           }
         }.entries);

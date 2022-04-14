@@ -4,6 +4,7 @@ class CodeCorrectionQuestion implements Question {
   CodeCorrectionQuestion(
       {this.question = '',
       this.score = 0,
+      this.maxScore = 1,
       this.type = 'codecorrection',
       this.answer = ''});
 
@@ -18,4 +19,7 @@ class CodeCorrectionQuestion implements Question {
 
   @override
   int score;
+
+  @override
+  int maxScore;
 }

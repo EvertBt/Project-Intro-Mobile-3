@@ -4,6 +4,7 @@ class MultipleChoiceQuestion implements Question {
   MultipleChoiceQuestion(
       {this.question = '',
       this.score = 0,
+      this.maxScore = 1,
       this.options,
       this.type = 'multiplechoice',
       this.answer = ''});
@@ -19,6 +20,9 @@ class MultipleChoiceQuestion implements Question {
 
   @override
   String type;
+
+  @override
+  int maxScore;
 
   List<String>? options;
 }
