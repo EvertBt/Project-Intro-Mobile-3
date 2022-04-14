@@ -1,6 +1,8 @@
+// ignore_for_file: overridden_fields
+
 import 'package:examen_app/firebase/model/question.dart';
 
-class CodeCorrectionQuestion implements Question {
+class CodeCorrectionQuestion extends Question {
   CodeCorrectionQuestion(
       {this.question = '',
       this.score = 0,
@@ -12,7 +14,7 @@ class CodeCorrectionQuestion implements Question {
   String answer;
 
   @override
-  String? question;
+  String question;
 
   @override
   String type;

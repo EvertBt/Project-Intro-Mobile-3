@@ -114,20 +114,27 @@ class ExamManager {
       Map<String, dynamic> questions, bool reviewMode) {
     List<Question> _questions = [];
     questions.forEach((key, value) {
-      Question question = Question(
-          maxScore: value['maxscore'],
-          score: value['score'],
-          question: value['question'],
-          answer: reviewMode ? value['answer'] : '');
-
       if (value['type'] == 'open') {
-        _questions.add(question);
+        _questions.add(Question(
+            maxScore: value['maxscore'],
+            score: value['score'],
+            question: value['question'],
+            answer: reviewMode ? value['answer'] : ''));
       } else if (value['type'] == "multiplechoice") {
-        question = question as MultipleChoiceQuestion;
-        question.options = _buildOptionList(value['options']);
-        _questions.add(question);
+        _questions.add(
+          MultipleChoiceQuestion(
+              options: _buildOptionList(value['options']),
+              maxScore: value['maxscore'],
+              score: value['score'],
+              question: value['question'],
+              answer: reviewMode ? value['answer'] : ''),
+        );
       } else if (value['type'] == 'codecorrection') {
-        _questions.add(question as CodeCorrectionQuestion);
+        _questions.add(CodeCorrectionQuestion(
+            maxScore: value['maxscore'],
+            score: value['score'],
+            question: value['question'],
+            answer: reviewMode ? value['answer'] : ''));
       }
     });
     return _questions;

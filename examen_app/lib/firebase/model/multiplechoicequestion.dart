@@ -1,6 +1,6 @@
 import 'package:examen_app/firebase/model/question.dart';
 
-class MultipleChoiceQuestion implements Question {
+class MultipleChoiceQuestion extends Question {
   MultipleChoiceQuestion(
       {this.question = '',
       this.score = 0,
@@ -13,7 +13,7 @@ class MultipleChoiceQuestion implements Question {
   String answer;
 
   @override
-  String? question;
+  String question;
 
   @override
   int score;

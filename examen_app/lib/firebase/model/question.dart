@@ -6,7 +6,7 @@ class Question {
       this.maxScore = 1,
       this.answer = ''});
 
-  String? question;
+  String question;
   String answer;
   int score;
   int maxScore;
