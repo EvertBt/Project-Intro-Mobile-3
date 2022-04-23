@@ -52,7 +52,7 @@ class ExamManager {
         title: snapshot.data()!['title'].toString(),
         duration: Duration(
             seconds: int.parse(snapshot.data()!['duration'].toString())),
-        questions: _buildQuestionList(snapshot.data()!['questions'], true));
+        questions: _buildQuestionList(snapshot.data()!['questions']));
 
     return exam;
   }
@@ -68,7 +68,7 @@ class ExamManager {
     Exam exam = Exam(
         title: _exam['title'].toString(),
         duration: Duration(seconds: int.parse(_exam['duration'].toString())),
-        questions: _buildQuestionList(_exam['questions'], false));
+        questions: _buildQuestionList(_exam['questions']));
 
     return exam;
   }
@@ -110,8 +110,7 @@ class ExamManager {
     });
   }
 
-  static List<Question> _buildQuestionList(
-      Map<String, dynamic> questions, bool reviewMode) {
+  static List<Question> _buildQuestionList(Map<String, dynamic> questions) {
     List<Question> _questions = [];
     questions.forEach((key, value) {
       if (value['type'] == 'open') {
@@ -119,7 +118,7 @@ class ExamManager {
             maxScore: value['maxscore'],
             score: value['score'],
             question: value['question'],
-            answer: reviewMode ? value['answer'] : ''));
+            answer: value['answer']));
       } else if (value['type'] == "multiplechoice") {
         _questions.add(
           MultipleChoiceQuestion(
@@ -127,14 +126,14 @@ class ExamManager {
               maxScore: value['maxscore'],
               score: value['score'],
               question: value['question'],
-              answer: reviewMode ? value['answer'] : ''),
+              answer: value['answer']),
         );
       } else if (value['type'] == 'codecorrection') {
         _questions.add(CodeCorrectionQuestion(
             maxScore: value['maxscore'],
             score: value['score'],
             question: value['question'],
-            answer: reviewMode ? value['answer'] : ''));
+            answer: value['answer']));
       }
     });
     return _questions;
