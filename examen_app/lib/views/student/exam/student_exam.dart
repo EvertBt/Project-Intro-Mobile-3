@@ -8,7 +8,10 @@ import 'package:examen_app/views/student/exam/questionview.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter_highlight/themes/a11y-light.dart';
+
 enum ExamState { questionOverview, question }
+enum LastState { questionOverview, question }
 
 class StudentExam extends StatefulWidget {
   const StudentExam({required this.student, Key? key}) : super(key: key);
@@ -21,6 +24,7 @@ class StudentExam extends StatefulWidget {
 
 class _StudentExam extends State<StudentExam> {
   ExamState state = ExamState.questionOverview;
+  LastState lastState = LastState.questionOverview;
   Exam exam = Exam();
   String apptitle = '';
   int questionCount = 0;
@@ -28,6 +32,8 @@ class _StudentExam extends State<StudentExam> {
   double progress = 0.0;
   Timer? _timer;
   Question? selectedQuestion;
+  TextEditingController controller = TextEditingController(text: "!empty!");
+  TextEditingController codeController = TextEditingController(text: "");
 
   @override
   void initState() {
@@ -83,7 +89,7 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void handInExam() async {
-    if (progress == 1) {
+    if (progress > 0) {
       widget.student.exam = exam;
       showDialog<String>(
         context: context,
@@ -211,6 +217,14 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void openQuestion(Question question) {
+    switch (state) {
+      case ExamState.questionOverview:
+        lastState = LastState.questionOverview;
+        break;
+      case ExamState.question:
+        lastState = LastState.question;
+        break;
+    }
     state = ExamState.question;
     selectedQuestion = question;
     updateProgress();
@@ -218,6 +232,14 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void showOverview() {
+    switch (state) {
+      case ExamState.questionOverview:
+        lastState = LastState.questionOverview;
+        break;
+      case ExamState.question:
+        lastState = LastState.question;
+        break;
+    }
     state = ExamState.questionOverview;
     updateProgress();
     setState(() {});
@@ -248,8 +270,19 @@ class _StudentExam extends State<StudentExam> {
             _buildRow,
             handInExam);
       case ExamState.question:
-        return question(context, showOverview, openQuestion, apptitle,
-            progressText, progress, widget.student, exam,
+        return question(
+            context,
+            showOverview,
+            openQuestion,
+            apptitle,
+            progressText,
+            progress,
+            widget.student,
+            exam,
+            state,
+            lastState,
+            controller,
+            codeController,
             question: selectedQuestion);
     }
   }

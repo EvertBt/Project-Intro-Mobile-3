@@ -4,28 +4,33 @@ import 'package:examen_app/firebase/model/exam.dart';
 import 'package:examen_app/firebase/model/multiplechoicequestion.dart';
 import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/firebase/model/student.dart';
-import 'package:examen_app/views/student/questions/codecorrection.dart';
-import 'package:examen_app/views/student/questions/multiplechoice.dart';
-import 'package:examen_app/views/student/questions/openquestion.dart';
+import 'package:examen_app/views/questions/codecorrection.dart';
+import 'package:examen_app/views/questions/multiplechoice.dart';
+import 'package:examen_app/views/questions/openquestion.dart';
+import 'package:examen_app/views/student/exam/student_exam.dart';
 import 'package:flutter/material.dart';
 
-Widget loadQuestion(BuildContext context, Question question) {
+Widget loadQuestion(
+  BuildContext context,
+  Question question,
+) {
   if (question is MultipleChoiceQuestion) {
-    return multipleChoiceQuestion(context);
+    return multipleChoiceQuestion(context, question);
   } else if (question is CodeCorrectionQuestion) {
-    return codeCorrectionQuestion(context);
+    return codeCorrectionQuestion(context, question);
   } else {
-    return openQuestion(context);
+    return openQuestion(context, question);
   }
 }
 
-Widget loadAnswer(BuildContext context, Question question) {
+Widget loadAnswer(BuildContext context, Question question,
+    TextEditingController controller, TextEditingController codeController) {
   if (question is MultipleChoiceQuestion) {
-    return multipleChoiceAnswer(context);
+    return MultipleChoiceAnswer(question: question);
   } else if (question is CodeCorrectionQuestion) {
-    return codeCorrectionAnswer(context);
+    return codeCorrectionAnswer(context, question, codeController);
   } else {
-    return openQuestionAnswer(context);
+    return openQuestionAnswer(context, question, controller);
   }
 }
 
@@ -38,6 +43,10 @@ Widget question(
     double progress,
     Student student,
     Exam exam,
+    ExamState state,
+    LastState lastState,
+    TextEditingController controller,
+    TextEditingController codeController,
     {Question? question}) {
   return WillPopScope(
       onWillPop: () async {
@@ -105,7 +114,7 @@ Widget question(
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(right: 50),
+                              margin: const EdgeInsets.only(right: 17),
                               height: 40,
                               width: 40,
                               child: CircularProgressIndicator(
@@ -239,13 +248,15 @@ Widget question(
                                   ),
                           ],
                         )),
-                    Expanded(child: loadAnswer(context, question))
+                    Expanded(
+                        child: loadAnswer(
+                            context, question, controller, codeController))
                   ],
                 ),
               ),
             )
           ],
-        ),
+        ), //bottomnavbar TEMP
         bottomNavigationBar: Container(
           height: 56,
           color: primaryColor,
