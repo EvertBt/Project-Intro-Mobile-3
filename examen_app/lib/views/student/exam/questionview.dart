@@ -1,4 +1,3 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/codecorrectionquestion.dart';
 import 'package:examen_app/firebase/model/exam.dart';
@@ -14,12 +13,11 @@ import 'package:flutter/material.dart';
 Widget loadQuestion(
   BuildContext context,
   Question question,
-  EditorModel model,
 ) {
   if (question is MultipleChoiceQuestion) {
     return multipleChoiceQuestion(context, question);
   } else if (question is CodeCorrectionQuestion) {
-    return codeCorrectionQuestion(context, question, model);
+    return codeCorrectionQuestion(context, question);
   } else {
     return openQuestion(context, question);
   }
@@ -28,7 +26,7 @@ Widget loadQuestion(
 Widget loadAnswer(BuildContext context, Question question,
     TextEditingController controller, TextEditingController codeController) {
   if (question is MultipleChoiceQuestion) {
-    return multipleChoiceAnswer(context, question);
+    return MultipleChoiceAnswer(question: question);
   } else if (question is CodeCorrectionQuestion) {
     return codeCorrectionAnswer(context, question, codeController);
   } else {
@@ -49,7 +47,6 @@ Widget question(
     LastState lastState,
     TextEditingController controller,
     TextEditingController codeController,
-    EditorModel model,
     {Question? question}) {
   return WillPopScope(
       onWillPop: () async {
@@ -129,7 +126,7 @@ Widget question(
                             )
                           ],
                         )),
-                    Expanded(child: loadQuestion(context, question, model))
+                    Expanded(child: loadQuestion(context, question))
                   ],
                 ),
               ),

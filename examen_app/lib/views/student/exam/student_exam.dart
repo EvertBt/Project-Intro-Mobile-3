@@ -1,4 +1,3 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/exam.dart';
@@ -35,21 +34,6 @@ class _StudentExam extends State<StudentExam> {
   Question? selectedQuestion;
   TextEditingController controller = TextEditingController(text: "!empty!");
   TextEditingController codeController = TextEditingController(text: "");
-
-  final EditorModel model = EditorModel(
-      files: [
-        FileEditor(
-          code: "",
-          name: "",
-          language: "C#",
-        )
-      ],
-      styleOptions: EditorModelStyleOptions(
-        editorBorderColor: Colors.white,
-        editorColor: Colors.white,
-        theme: a11yLightTheme,
-        fontSize: 20,
-      ));
 
   @override
   void initState() {
@@ -105,7 +89,7 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void handInExam() async {
-    if (progress == 1) {
+    if (progress > 0) {
       widget.student.exam = exam;
       showDialog<String>(
         context: context,
@@ -299,7 +283,6 @@ class _StudentExam extends State<StudentExam> {
             lastState,
             controller,
             codeController,
-            model,
             question: selectedQuestion);
     }
   }

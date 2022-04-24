@@ -14,7 +14,7 @@ Widget openQuestion(BuildContext context, Question question) {
           border: InputBorder.none,
           hintText: question.question,
           hintStyle: const TextStyle(
-            fontSize: 35,
+            fontSize: 30,
             color: Colors.black,
           )),
     ),

@@ -1,3 +1,4 @@
+import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/multiplechoicequestion.dart';
 import 'package:examen_app/firebase/model/question.dart';
 import 'package:flutter/material.dart';
@@ -15,37 +16,59 @@ Widget multipleChoiceQuestion(
           border: InputBorder.none,
           hintText: question.question,
           hintStyle: const TextStyle(
-            fontSize: 35,
+            fontSize: 30,
             color: Colors.black,
           )),
     ),
   );
 }
 
-Widget multipleChoiceAnswer(
-    BuildContext context, MultipleChoiceQuestion question) {
-  String? selectedAnswer = "";
-  if (question.answer == "") {
-    selectedAnswer = question.options![0];
-  }
-  return Container(
-    margin: const EdgeInsets.all(30),
-    child: ListView.builder(
-        itemCount: question.options!.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildRow(index, question, selectedAnswer);
-        }),
-  );
+class MultipleChoiceAnswer extends StatefulWidget {
+  const MultipleChoiceAnswer({required this.question, Key? key})
+      : super(key: key);
+
+  final MultipleChoiceQuestion question;
+
+  @override
+  State<MultipleChoiceAnswer> createState() => _MultipleChoiceAnswer();
 }
 
-Widget _buildRow(
-    int i, MultipleChoiceQuestion question, String? selectedAnswer) {
-  return RadioListTile<String>(
-    title: Text(question.options![i]),
-    value: question.options![i],
-    groupValue: selectedAnswer,
-    onChanged: (value) {
-      selectedAnswer = value;
-    },
-  );
+class _MultipleChoiceAnswer extends State<MultipleChoiceAnswer> {
+  List<Widget> _radioButtonList(
+      MultipleChoiceQuestion question, String? selectedAnswer) {
+    List<Widget> buttons = [];
+
+    for (String option in question.options!) {
+      buttons.add(TextButton(
+          style: TextButton.styleFrom(primary: Colors.grey),
+          onPressed: () {},
+          child: RadioListTile<String>(
+            title: Text(
+              option,
+              style: const TextStyle(fontSize: 25),
+            ),
+            value: option,
+            groupValue: selectedAnswer,
+            activeColor: buttonColor,
+            onChanged: (value) {
+              setState(() {
+                selectedAnswer = value;
+                question.answer = value!;
+              });
+            },
+          )));
+    }
+    return buttons;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String? selectedAnswer = widget.question.answer;
+
+    return Container(
+        margin: const EdgeInsets.all(30),
+        child: Column(
+          children: _radioButtonList(widget.question, selectedAnswer),
+        ));
+  }
 }
