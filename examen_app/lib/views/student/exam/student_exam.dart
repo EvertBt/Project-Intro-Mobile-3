@@ -34,17 +34,17 @@ class _StudentExam extends State<StudentExam> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    getData();
-    getLocation();
-    WidgetsBinding.instance?.addObserver(this);
     super.initState();
+    Future.delayed(Duration.zero, () {
+      getData();
+    });
   }
 
   @override
   void dispose() {
     _timer!.cancel();
-    super.dispose();
     WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -60,6 +60,11 @@ class _StudentExam extends State<StudentExam> with WidgetsBindingObserver {
     }
   }
 
+  void init() async {
+    WidgetsBinding.instance?.addObserver(this);
+    await getLocation();
+  }
+
   void getData() {
     exam = widget.student.exam!;
     apptitle = exam.title;
@@ -67,11 +72,12 @@ class _StudentExam extends State<StudentExam> with WidgetsBindingObserver {
     updateProgress();
     if (!alreadyEntered()) {
       startTimer();
+      init();
     }
     setState(() {});
   }
 
-  void getLocation() async {
+  Future<void> getLocation() async {
     widget.student.location = await Locator.getLocation();
   }
 
@@ -211,7 +217,7 @@ class _StudentExam extends State<StudentExam> with WidgetsBindingObserver {
                   child: AlertDialog(
                     title: const Text('Examen al ingediend'),
                     content: const Text(
-                        'Je hebt dit examen al ingediend.\nJe zal terug naar het homescherm gebracht worden'),
+                        'Je hebt dit examen al ingediend.\nJe zal terug naar het hoofdscherm gebracht worden'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => {

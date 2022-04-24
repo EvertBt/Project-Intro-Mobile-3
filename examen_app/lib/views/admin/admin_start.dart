@@ -1,9 +1,14 @@
+import 'package:examen_app/firebase/model/student.dart';
+import 'package:examen_app/views/admin/admin_exam.dart';
+import 'package:examen_app/views/admin/admin_students.dart';
 import 'package:examen_app/views/admin/changepassword.dart';
 import 'package:examen_app/config/constants.dart';
 import 'package:flutter/material.dart';
 
 class AdminStart extends StatefulWidget {
   const AdminStart({Key? key}) : super(key: key);
+
+  static List<Student> students = [];
 
   @override
   State<AdminStart> createState() => _AdminStart();
@@ -12,8 +17,8 @@ class AdminStart extends StatefulWidget {
 class _AdminStart extends State<AdminStart> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    Text("Studenten"),
-    Text("Examen"),
+    AdminStudents(),
+    AdminExam(),
     ChangePassword()
   ];
 
