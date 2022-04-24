@@ -1,4 +1,5 @@
 import 'package:examen_app/config/constants.dart';
+import 'package:examen_app/helpers/locationrequester.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,8 +11,13 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
+  void getLocationPermission() async {
+    await Locator.askPermission();
+  }
+
   @override
   void initState() {
+    getLocationPermission();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     super.initState();
   }

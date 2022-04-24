@@ -44,7 +44,6 @@ Widget question(
     Student student,
     Exam exam,
     ExamState state,
-    LastState lastState,
     TextEditingController controller,
     TextEditingController codeController,
     {Question? question}) {

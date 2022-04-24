@@ -36,6 +36,7 @@ class ExamManager {
           .set({
         'leftAppCount': student.leftAppCount,
         'studentNr': student.studentNr,
+        'location': student.location,
         'exam': <String, dynamic>{
           'duration': exam.duration.inSeconds,
           'questions': _buildQuestionsMap(exam, forStudent: true)
@@ -57,21 +58,21 @@ class ExamManager {
     return exam;
   }
 
-  static Future<Exam> getExamFromStudent(Student student) async {
-    await _initialize();
+  // static Future<Exam> getExamFromStudent(Student student) async {
+  //   await _initialize();
 
-    var snapshot = await FirebaseFirestore.instance
-        .doc('students/${student.studentNr}')
-        .get();
-    Map<String, dynamic> _exam = snapshot.data()!['exam'];
+  //   var snapshot = await FirebaseFirestore.instance
+  //       .doc('students/${student.studentNr}')
+  //       .get();
+  //   Map<String, dynamic> _exam = snapshot.data()!['exam'];
 
-    Exam exam = Exam(
-        title: _exam['title'].toString(),
-        duration: Duration(seconds: int.parse(_exam['duration'].toString())),
-        questions: _buildQuestionList(_exam['questions']));
+  //   Exam exam = Exam(
+  //       title: _exam['title'].toString(),
+  //       duration: Duration(seconds: int.parse(_exam['duration'].toString())),
+  //       questions: _buildQuestionList(_exam['questions']));
 
-    return exam;
-  }
+  //   return exam;
+  // }
 
   static Future<void> pushExamToStudent(Exam exam, Student student) async {
     await _initialize();
@@ -79,6 +80,7 @@ class ExamManager {
     await FirebaseFirestore.instance
         .doc('students/${student.studentNr}')
         .update({
+      'location': student.location,
       'leftAppCount': student.leftAppCount,
       'exam': <String, dynamic>{
         'title': exam.title,
@@ -97,7 +99,13 @@ class ExamManager {
         .get()
         .then((value) => {
               for (var student in value.docs)
-                {students.add(Student(studentNr: student['studentNr']))}
+                {
+                  students.add(Student(
+                      studentNr: student['studentNr'],
+                      location: student['location'],
+                      leftAppCount: student['leftAppCount'],
+                      exam: _buildExam(student['exam'])))
+                }
             });
 
     return students;
@@ -108,6 +116,15 @@ class ExamManager {
       'duration': exam.duration.inSeconds,
       'questions': _buildQuestionsMap(exam)
     });
+  }
+
+  static Exam _buildExam(Map<String, dynamic> _exam) {
+    Exam exam = Exam(
+        title: _exam['title'].toString(),
+        duration: Duration(seconds: int.parse(_exam['duration'].toString())),
+        questions: _buildQuestionList(_exam['questions']));
+
+    return exam;
   }
 
   static List<Question> _buildQuestionList(Map<String, dynamic> questions) {

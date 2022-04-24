@@ -1,6 +1,7 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/student.dart';
+import 'package:examen_app/helpers/locationrequester.dart';
 import 'package:flutter/material.dart';
 
 class StudentHome extends StatefulWidget {
@@ -55,7 +56,7 @@ class _StudentHome extends State<StudentHome> {
       height: 75.0,
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.pushNamed(context, studentExamRoute,
                 arguments: _searchStudents[i]);
           },

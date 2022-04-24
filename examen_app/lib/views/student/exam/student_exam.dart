@@ -3,15 +3,13 @@ import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/exam.dart';
 import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/firebase/model/student.dart';
+import 'package:examen_app/helpers/locationrequester.dart';
 import 'package:examen_app/views/student/exam/overview.dart';
 import 'package:examen_app/views/student/exam/questionview.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter_highlight/themes/a11y-light.dart';
-
 enum ExamState { questionOverview, question }
-enum LastState { questionOverview, question }
 
 class StudentExam extends StatefulWidget {
   const StudentExam({required this.student, Key? key}) : super(key: key);
@@ -22,9 +20,8 @@ class StudentExam extends StatefulWidget {
   State<StudentExam> createState() => _StudentExam();
 }
 
-class _StudentExam extends State<StudentExam> {
+class _StudentExam extends State<StudentExam> with WidgetsBindingObserver {
   ExamState state = ExamState.questionOverview;
-  LastState lastState = LastState.questionOverview;
   Exam exam = Exam();
   String apptitle = '';
   int questionCount = 0;
@@ -38,6 +35,8 @@ class _StudentExam extends State<StudentExam> {
   @override
   void initState() {
     getData();
+    getLocation();
+    WidgetsBinding.instance?.addObserver(this);
     super.initState();
   }
 
@@ -45,17 +44,35 @@ class _StudentExam extends State<StudentExam> {
   void dispose() {
     _timer!.cancel();
     super.dispose();
+    WidgetsBinding.instance?.removeObserver(this);
   }
 
-  void getData() async {
-    await ExamManager.getExamFromStudent(widget.student).then((value) => {
-          exam = value,
-          apptitle = exam.title,
-          questionCount = exam.questions!.length,
-          updateProgress(),
-          if (!alreadyEntered()) {startTimer()},
-          setState(() {})
-        });
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      widget.student.leftAppCount++;
+    }
+  }
+
+  void getData() {
+    exam = widget.student.exam!;
+    apptitle = exam.title;
+    questionCount = exam.questions!.length;
+    updateProgress();
+    if (!alreadyEntered()) {
+      startTimer();
+    }
+    setState(() {});
+  }
+
+  void getLocation() async {
+    widget.student.location = await Locator.getLocation();
   }
 
   void startTimer() {
@@ -133,7 +150,7 @@ class _StudentExam extends State<StudentExam> {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          content: const Text('Gelieve alle vragen te beantwoorden'),
+          content: const Text('Gelieve ten minste 1 vraag te beantwoorden'),
           actions: <Widget>[
             TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -217,14 +234,6 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void openQuestion(Question question) {
-    switch (state) {
-      case ExamState.questionOverview:
-        lastState = LastState.questionOverview;
-        break;
-      case ExamState.question:
-        lastState = LastState.question;
-        break;
-    }
     state = ExamState.question;
     selectedQuestion = question;
     updateProgress();
@@ -232,14 +241,6 @@ class _StudentExam extends State<StudentExam> {
   }
 
   void showOverview() {
-    switch (state) {
-      case ExamState.questionOverview:
-        lastState = LastState.questionOverview;
-        break;
-      case ExamState.question:
-        lastState = LastState.question;
-        break;
-    }
     state = ExamState.questionOverview;
     updateProgress();
     setState(() {});
@@ -280,7 +281,6 @@ class _StudentExam extends State<StudentExam> {
             widget.student,
             exam,
             state,
-            lastState,
             controller,
             codeController,
             question: selectedQuestion);
