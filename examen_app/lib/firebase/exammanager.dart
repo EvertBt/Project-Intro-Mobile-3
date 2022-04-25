@@ -35,6 +35,7 @@ class ExamManager {
           .doc(student.studentNr)
           .set({
         'leftAppCount': student.leftAppCount,
+        'name': student.name,
         'studentNr': student.studentNr,
         'location': student.location,
         'exam': <String, dynamic>{
@@ -101,6 +102,7 @@ class ExamManager {
               for (var student in value.docs)
                 {
                   students.add(Student(
+                      name: student['name'],
                       studentNr: student['studentNr'],
                       location: student['location'],
                       leftAppCount: student['leftAppCount'],
