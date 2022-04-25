@@ -1,8 +1,8 @@
 import 'package:examen_app/config/constants.dart';
-import 'package:examen_app/firebase/exammanager.dart';
-import 'package:examen_app/firebase/model/exam.dart';
 import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
+import 'package:examen_app/views/admin/admin_start.dart';
+import 'package:examen_app/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class AdminExamHome extends StatefulWidget {
@@ -15,26 +15,6 @@ class AdminExamHome extends StatefulWidget {
 }
 
 class _AdminExamHome extends State<AdminExamHome> {
-  Exam exam = Exam();
-
-  @override
-  void initState() {
-    super.initState();
-    //getExam();
-    _loadData();
-  }
-
-  void _loadData() async {
-    await ExamManager.getExam().then((value) =>
-        {exam = value, print("exam: ${exam.title}"), setState(() {})});
-  }
-
-  // void getExam() async {
-  //   exam = await ExamManager.getExam();
-  //   print("question length: ${exam!.questions!.length}");
-  //   setState(() {});
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +32,7 @@ class _AdminExamHome extends State<AdminExamHome> {
             Expanded(
               flex: 5,
               child: Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: 15.0, horizontal: 20.0),
+                margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
                 width: 700.0,
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -90,7 +69,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                         child: Container(
                       padding: const EdgeInsets.only(bottom: 20, top: 20),
                       child: ListView.builder(
-                          itemCount: exam.questions?.length,
+                          itemCount: AdminStart.exam.questions?.length,
                           itemBuilder: (BuildContext context, int index) {
                             return _buildRow(index);
                           }),
@@ -106,8 +85,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                     Expanded(
                         flex: 2,
                         child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 20.0),
+                          margin: const EdgeInsets.fromLTRB(10, 20, 20, 10),
                           width: 700.0,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -128,8 +106,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                     Expanded(
                         flex: 5,
                         child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 20.0),
+                            margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
                             width: 700.0,
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -145,7 +122,23 @@ class _AdminExamHome extends State<AdminExamHome> {
                                     fontSize: 30, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
-                            )))
+                            ))),
+                    Expanded(
+                        child: CustomButton(
+                      width: double.infinity,
+                      height: 0,
+                      buttonColor: buttonColor,
+                      onPressed: () {},
+                      margin: const EdgeInsets.fromLTRB(10, 10, 20, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
+                      buttonText: "Examen opslaan",
+                      fontSize: 35,
+                      borderRadius: 25,
+                      icon: const Icon(
+                        Icons.save,
+                        size: 45,
+                      ),
+                    )),
                   ],
                 ))
           ]),
