@@ -1,3 +1,4 @@
+import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/firebase/model/student.dart';
 import 'package:examen_app/views/admin/student%20views/admin_students_add_student.dart';
 import 'package:examen_app/views/admin/student%20views/admin_students_home.dart';
@@ -19,13 +20,15 @@ class _AdminStudents extends State<AdminStudents> {
 
   Student? student;
   List<Student>? students;
+  Question? question;
 
   void switchState(AdminStudentState newState,
-      {Student? student_, List<Student>? students_}) {
+      {Student? student_, List<Student>? students_, Question? question_}) {
     setState(() {
       students = students_;
       student = student_;
       state = newState;
+      question = question_;
     });
   }
 
@@ -38,7 +41,8 @@ class _AdminStudents extends State<AdminStudents> {
       case AdminStudentState.studentDetails:
         return AdminStudentDetails(student: student, switchState: switchState);
       case AdminStudentState.studentAnswer:
-        return AdminStudentAnswer(student: student, switchState: switchState);
+        return AdminStudentAnswer(
+            student: student, switchState: switchState, question: question);
     }
   }
 
