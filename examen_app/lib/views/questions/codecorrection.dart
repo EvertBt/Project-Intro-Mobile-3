@@ -1,7 +1,7 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/codecorrectionquestion.dart';
 import 'package:examen_app/helpers/formatter.dart';
-import 'package:examen_app/widgets/codeditor.dart';
+import 'package:examen_app/helpers/widgets/codeditor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/a11y-light.dart';
