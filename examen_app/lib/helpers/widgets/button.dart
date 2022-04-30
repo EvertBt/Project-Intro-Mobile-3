@@ -4,7 +4,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     this.onPressed,
     this.buttonText = "",
-    this.borderRadius = 0,
+    this.borderRadius = 25,
     this.fontSize = 25,
     this.margin = const EdgeInsets.all(0),
     this.padding,
@@ -38,8 +38,8 @@ class CustomButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             primary: buttonColor,
             onPrimary: Colors.white,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius)),
             padding: padding != null
                 ? padding!
                 : buttonText.length > 6

@@ -1,3 +1,4 @@
+import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/firebase/model/student.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
 import 'package:examen_app/views/admin/admin_students.dart';
@@ -8,7 +9,10 @@ import 'package:flutter/material.dart';
 class AdminStart extends StatefulWidget {
   const AdminStart({Key? key}) : super(key: key);
 
+  static Student? selectedStudent;
+  static Question? selectedQuestion;
   static List<Student> students = [];
+  static List<Student> searchStudents = [];
 
   @override
   State<AdminStart> createState() => _AdminStart();
@@ -43,8 +47,8 @@ class _AdminStart extends State<AdminStart> {
               children: [
                 Container(
                     width: 100.0,
-                    height: 56.0,
-                    padding: const EdgeInsets.only(left: 10.0),
+                    height: 70.0,
+                    padding: const EdgeInsets.only(left: 15.0),
                     decoration: const BoxDecoration(
                       color: primaryColor,
                     ),
@@ -56,19 +60,30 @@ class _AdminStart extends State<AdminStart> {
                       ),
                     )),
                 Expanded(
+                    child: SizedBox(
+                  height: 70,
                   child: BottomNavigationBar(
                     elevation: 0,
                     items: const [
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.people),
+                        icon: Icon(
+                          Icons.people,
+                          size: 40,
+                        ),
                         label: 'Studenten',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.book),
+                        icon: Icon(
+                          Icons.book,
+                          size: 40,
+                        ),
                         label: 'Examen',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.lock),
+                        icon: Icon(
+                          Icons.lock,
+                          size: 40,
+                        ),
                         label: 'Wachtwoord wijzigen',
                       ),
                     ],
@@ -77,12 +92,12 @@ class _AdminStart extends State<AdminStart> {
                     selectedItemColor: Colors.white,
                     onTap: _onItemTapped,
                   ),
-                ),
+                )),
                 Container(
                   decoration: const BoxDecoration(
                     color: primaryColor,
                   ),
-                  height: 56.0,
+                  height: 70.0,
                   width: 100.0,
                   child: TextButton(
                       onPressed: () {
@@ -93,7 +108,7 @@ class _AdminStart extends State<AdminStart> {
                       child: const Icon(
                         Icons.home,
                         color: Colors.white,
-                        size: 35,
+                        size: 45,
                       )),
                 )
               ],
