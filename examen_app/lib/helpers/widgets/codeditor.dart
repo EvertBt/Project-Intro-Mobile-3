@@ -1,7 +1,7 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/codecorrectionquestion.dart';
 import 'package:examen_app/helpers/formatter.dart';
-import 'package:examen_app/widgets/button.dart';
+import 'package:examen_app/helpers/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class CodeEditor extends StatefulWidget {

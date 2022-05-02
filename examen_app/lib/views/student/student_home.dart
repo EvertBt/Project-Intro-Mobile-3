@@ -1,7 +1,6 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/student.dart';
-import 'package:examen_app/helpers/locationrequester.dart';
 import 'package:flutter/material.dart';
 
 class StudentHome extends StatefulWidget {
@@ -35,12 +34,12 @@ class _StudentHome extends State<StudentHome> {
     setState(() {
       _searchStudents.clear();
       for (Student student in _students) {
-        if (student.studentNr.contains(searchText)) {
+        if (student.studentNr
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            student.name.toLowerCase().contains(searchText.toLowerCase())) {
           _searchStudents.add(student);
         }
-      }
-      if (_searchStudents.isEmpty) {
-        _searchStudents.addAll(_students);
       }
     });
   }
@@ -68,9 +67,28 @@ class _StudentHome extends State<StudentHome> {
             padding: const EdgeInsets.all(8.0),
             elevation: 5,
           ),
-          child: Text(
-            _searchStudents[i].studentNr,
-            style: const TextStyle(fontSize: 30.0),
+          child: Row(
+            children: [
+              Container(
+                width: 450,
+                padding: const EdgeInsets.only(left: 30, top: 12, bottom: 12),
+                child: FittedBox(
+                    alignment: Alignment.centerLeft,
+                    fit: BoxFit.contain,
+                    child: Text(
+                      _searchStudents[i].name,
+                      style: const TextStyle(fontSize: 30.0),
+                    )),
+              ),
+              Expanded(child: Container()),
+              Container(
+                padding: const EdgeInsets.only(right: 30),
+                child: Text(
+                  _searchStudents[i].studentNr,
+                  style: const TextStyle(fontSize: 30.0),
+                ),
+              ),
+            ],
           )),
     );
   }
@@ -123,7 +141,7 @@ class _StudentHome extends State<StudentHome> {
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.fromLTRB(
                                         12, 24, 12, 20),
-                                    labelText: "zoek op studentnummer",
+                                    labelText: "zoek op naam of studentnummer",
                                     errorText: "",
                                     labelStyle:
                                         const TextStyle(color: Colors.black),
