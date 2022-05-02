@@ -15,6 +15,8 @@ class AdminExamHome extends StatefulWidget {
 }
 
 class _AdminExamHome extends State<AdminExamHome> {
+  Question question = Question();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +154,7 @@ class _AdminExamHome extends State<AdminExamHome> {
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: ElevatedButton(
           onPressed: () {
-            //editQuestion(i);
+            editQuestion(AdminStart.exam.questions![i]);
           },
           style: ElevatedButton.styleFrom(
             primary: buttonColor,
@@ -184,5 +186,22 @@ class _AdminExamHome extends State<AdminExamHome> {
     );
   }
 
-  void editQuestion(Question question) {}
+  void editQuestion(Question question) {
+    this.question = question;
+    switch (question.type) {
+      case "open":
+        //print("pressed on open ended question");
+        widget.switchState(AdminExamState.openEnded);
+        break;
+      case "multiplechoice":
+        //print("pressed on multiple choice question");
+        widget.switchState(AdminExamState.openEnded);
+        break;
+      case "codecorrection":
+        //print("pressed on code correction question");
+        widget.switchState(AdminExamState.openEnded);
+        break;
+      default:
+    }
+  }
 }
