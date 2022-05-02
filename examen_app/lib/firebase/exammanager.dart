@@ -48,16 +48,26 @@ class ExamManager {
 
   static Future<Exam> getExam() async {
     await _initialize();
-
-    var snapshot = await FirebaseFirestore.instance.doc('exams/exam').get();
-    Exam exam = Exam(
-        title: snapshot.data()!['title'].toString(),
-        duration: Duration(
-            seconds: int.parse(snapshot.data()!['duration'].toString())),
-        questions: _buildQuestionList(snapshot.data()!['questions']));
-
+    Exam exam = Exam();
+    await FirebaseFirestore.instance
+        .doc('exams/exam')
+        .get()
+        .then((value) => {exam = _buildExam(value.data()!)});
     return exam;
   }
+
+  // static Future<Exam> getExam() async {
+  //   await _initialize();
+
+  //   var snapshot = await FirebaseFirestore.instance.doc('exams/exam').get();
+  //   Exam exam = Exam(
+  //       title: snapshot.data()!['title'].toString(),
+  //       duration: Duration(
+  //           seconds: int.parse(snapshot.data()!['duration'].toString())),
+  //       questions: _buildQuestionList(snapshot.data()!['questions']));
+
+  //   return exam;
+  // }
 
   // static Future<Exam> getExamFromStudent(Student student) async {
   //   await _initialize();
