@@ -1,4 +1,6 @@
 import 'package:examen_app/firebase/model/question.dart';
+import 'package:examen_app/firebase/exammanager.dart';
+import 'package:examen_app/firebase/model/exam.dart';
 import 'package:examen_app/firebase/model/student.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
 import 'package:examen_app/views/admin/admin_students.dart';
@@ -12,6 +14,7 @@ class AdminStart extends StatefulWidget {
   static Student? selectedStudent;
   static Question? selectedQuestion;
   static List<Student> students = [];
+  static Exam exam = Exam();
   static List<Student> searchStudents = [];
 
   @override
@@ -30,6 +33,26 @@ class _AdminStart extends State<AdminStart> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void loadStudents() async {
+    AdminStart.students = await ExamManager.getStudents();
+  }
+
+  void loadExam() async {
+    AdminStart.exam = await ExamManager.getExam();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (AdminStart.students.isEmpty) {
+      loadStudents();
+    }
+    if (AdminStart.exam.questions == null) {
+      loadExam();
+    }
   }
 
   @override
