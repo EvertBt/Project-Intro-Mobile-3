@@ -36,7 +36,8 @@ class _AdminStart extends State<AdminStart> {
   }
 
   void loadStudents() async {
-    AdminStart.students = await ExamManager.getStudents();
+    AdminStart.students = await ExamManager.getStudents()
+        .then((value) => AdminStart.searchStudents = value);
   }
 
   void loadExam() async {

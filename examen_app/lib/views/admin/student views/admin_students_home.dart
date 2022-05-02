@@ -106,6 +106,7 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
   @override
   void initState() {
     super.initState();
+    _clearSearchTextField();
   }
 
   @override
