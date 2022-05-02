@@ -30,92 +30,39 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
           child: Column(
             children: [
               Expanded(
-                  flex: 4,
+                  //flex: 4,
                   child: Row(
+                children: [
+                  Expanded(
+                      child: Column(
                     children: [
-                      Expanded(
-                          child: Column(
-                        children: [
-                          Container(
-                              margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
-                              height: 70,
-                              decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 5,
-                                        offset: Offset(0, 3))
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(25.0)),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 50),
-                                    child: const Text(
-                                      "Vragen",
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(23),
-                                color: buttonColor,
+                      Container(
+                          margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
+                          height: 70,
+                          decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3))
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25.0)),
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(left: 50),
+                                child: const Text(
+                                  "Vragen",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                              child: Container(
-                                margin: const EdgeInsets.all(3),
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 10, 10, 300),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white,
-                                ),
-                                child: const TextField(
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: null,
-                                  style: TextStyle(fontSize: 25),
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "vul hier de vraag in"),
-                                  cursorColor: buttonColor,
-                                ),
-                              ))
-                        ],
-                      )),
+                            ],
+                          )),
                       Expanded(
-                          child: Column(
-                        children: [
-                          Container(
-                              margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
-                              height: 70,
-                              decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 5,
-                                        offset: Offset(0, 3))
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(25.0)),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 50),
-                                    child: const Text(
-                                      "Vragen",
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Container(
+                          child: Container(
                               margin: const EdgeInsets.all(30),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(23),
@@ -124,7 +71,7 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
                               child: Container(
                                 margin: const EdgeInsets.all(3),
                                 padding:
-                                    const EdgeInsets.fromLTRB(20, 10, 10, 300),
+                                    const EdgeInsets.fromLTRB(20, 10, 10, 30),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.white,
@@ -138,28 +85,81 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
                                       hintText: "vul hier het antwoord in"),
                                   cursorColor: buttonColor,
                                 ),
-                              ))
-                        ],
-                      ))
+                              )))
                     ],
                   )),
-              Expanded(
-                  flex: 2,
-                  child: CustomButton(
-                    width: double.infinity,
-                    height: 0,
-                    buttonColor: buttonColor,
-                    onPressed: () {},
-                    margin: const EdgeInsets.fromLTRB(600, 100, 600, 100),
-                    padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
-                    buttonText: "Vraag opslaan",
-                    fontSize: 35,
-                    borderRadius: 25,
-                    icon: const Icon(
-                      Icons.save,
-                      size: 45,
-                    ),
+                  Expanded(
+                      child: Column(
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
+                          height: 70,
+                          decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3))
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25.0)),
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(left: 50),
+                                child: const Text(
+                                  "Vragen",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                          child: Container(
+                              margin: const EdgeInsets.all(30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(23),
+                                color: buttonColor,
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(3),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 10, 10, 30),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: const TextField(
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: null,
+                                  style: TextStyle(fontSize: 25),
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "vul hier het antwoord in"),
+                                  cursorColor: buttonColor,
+                                ),
+                              )))
+                    ],
                   ))
+                ],
+              )),
+              CustomButton(
+                width: 600,
+                height: 80,
+                buttonColor: buttonColor,
+                onPressed: () {},
+                margin: const EdgeInsets.symmetric(vertical: 30),
+                padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
+                buttonText: "Vraag opslaan",
+                fontSize: 35,
+                borderRadius: 25,
+                icon: const Icon(
+                  Icons.save,
+                  size: 45,
+                ),
+              )
             ],
           ),
         ));
