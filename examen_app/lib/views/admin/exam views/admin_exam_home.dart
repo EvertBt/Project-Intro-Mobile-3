@@ -1,8 +1,8 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/question.dart';
+import 'package:examen_app/helpers/widgets/button.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
 import 'package:examen_app/views/admin/admin_start.dart';
-import 'package:examen_app/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class AdminExamHome extends StatefulWidget {
