@@ -17,9 +17,10 @@ class AdminStudentsHome extends StatefulWidget {
 
 class _AdminStudentsHome extends State<AdminStudentsHome> {
   final TextEditingController _controller = TextEditingController();
-  final TextEditingController _addStudentController = TextEditingController();
+  final TextEditingController _csvTextController = TextEditingController();
 
   bool editingStudents = false;
+  bool wrongFormat = false;
 
   void _searchStudent(String searchText) {
     setState(() {
@@ -35,28 +36,112 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
     });
   }
 
+  bool convertCSVToStudent() {
+    List<Student> studentsToKeep = [];
+    List<Student> newStudents = [];
+    if (_csvTextController.text != '') {
+      try {
+        List<String> items = _csvTextController.text.split(';');
+        for (String item in items) {
+          if (item != '') {
+            List<String> student = _cleanList(item.split(' '));
+
+            if (student.length < 3 ||
+                student[student.length - 1][0].toLowerCase() != 's' ||
+                !_isNumeric(student[student.length - 1].substring(1)) ||
+                student[student.length - 1].length != 7) {
+              return false;
+            }
+
+            String _name = '';
+            for (String name in student) {
+              if (name != student[student.length - 1]) {
+                if (name == student[0]) {
+                  _name += name;
+                } else {
+                  // ignore: unnecessary_brace_in_string_interps
+                  _name += ' ${name}';
+                }
+              }
+            }
+            bool exists = false;
+            Student studentToKeep = Student();
+            for (Student _student in AdminStart.students) {
+              if (_student.name == _name &&
+                  _student.studentNr == student[student.length - 1]) {
+                studentToKeep = _student;
+                exists = true;
+              }
+            }
+            if (exists) {
+              studentsToKeep.add(studentToKeep);
+            } else {
+              newStudents.add(Student(
+                name: _name,
+                studentNr: student[student.length - 1],
+              ));
+            }
+          }
+        }
+      } catch (_) {
+        return false;
+      }
+    }
+
+    AdminStart.students.clear();
+    AdminStart.searchStudents.clear();
+
+    AdminStart.students.addAll(studentsToKeep);
+    AdminStart.students.addAll(newStudents);
+
+    AdminStart.searchStudents.addAll(studentsToKeep);
+    AdminStart.searchStudents.addAll(newStudents);
+
+    return true;
+  }
+
+  List<String> _cleanList(List<String> list) {
+    List<String> _list = [];
+    for (String item in list) {
+      if (item != ' ' && item != '') {
+        _list.add(item);
+      }
+    }
+    return _list;
+  }
+
+  bool _isNumeric(String s) {
+    return int.tryParse(s) != null;
+  }
+
+  void convertStudentToCSV() {
+    _csvTextController.clear();
+    for (Student student in AdminStart.students) {
+      _csvTextController.text += '${student.name} ${student.studentNr};';
+    }
+  }
+
   void _editStudents() {
     editingStudents = true;
+    convertStudentToCSV();
     setState(() {});
   }
 
-  void _addStudent() {
-    // AdminStart.students.add( snr + naam? );
-  }
-
   void _saveStudents() {
-    editingStudents = false;
+    if (convertCSVToStudent() == false) {
+      setState(() {
+        wrongFormat = true;
+      });
+    } else {
+      wrongFormat = false;
+      editingStudents = false;
+    }
     setState(() {});
   }
 
   void _clearSearchTextField() {
     _controller.clear();
     _searchStudent("");
-  }
-
-  void _clearStudentTextField() {
-    _addStudentController.clear();
-    setState(() {});
   }
 
   void getStudents() async {
@@ -146,147 +231,126 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
               borderRadius: BorderRadius.circular(25)),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(color: Colors.grey, blurRadius: 5)
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25.0)),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                          margin: const EdgeInsets.fromLTRB(5, 20, 5, 0),
-                          height: 70,
-                          child: Container(
-                              width: 600,
-                              height: 90,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: TextField(
-                                controller: _controller,
-                                onChanged: (value) => {_searchStudent(value)},
-                                cursorColor: buttonColor,
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      const EdgeInsets.fromLTRB(12, 24, 12, 20),
-                                  labelText: "zoek op naam of studentnummer",
-                                  errorText: "",
-                                  labelStyle:
-                                      const TextStyle(color: Colors.black),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        const BorderSide(color: buttonColor),
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.black)),
-                                  suffixIcon: _controller.text.isEmpty
-                                      ? null
-                                      : IconButton(
-                                          icon: const Icon(
-                                            Icons.clear,
-                                            color: buttonColor,
-                                          ),
-                                          onPressed: _clearSearchTextField,
-                                        ),
-                                ),
-                              ))),
-                    ),
-                  ],
-                ),
-              ),
               editingStudents
-                  ? Container(
-                      width: double.infinity,
-                      height: 75.0,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            primary: buttonColor,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            padding: const EdgeInsets.fromLTRB(10, 8, 8, 8),
-                            elevation: 5,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                  height: 50,
-                                  width: 500,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                  ),
-                                  child: TextField(
-                                    controller: _addStudentController,
-                                    style: const TextStyle(fontSize: 23),
-                                    textAlignVertical: TextAlignVertical.center,
-                                    onChanged: (value) => {_editStudents()},
-                                    cursorColor: buttonColor,
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          12, 24, 12, 20),
-                                      labelStyle:
-                                          const TextStyle(color: Colors.black),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                            color: buttonColor),
-                                      ),
-                                      border: OutlineInputBorder(
+                  ? Container()
+                  : Container(
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(color: Colors.grey, blurRadius: 5)
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(25.0)),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                                margin: const EdgeInsets.fromLTRB(5, 20, 5, 0),
+                                height: 70,
+                                child: Container(
+                                    width: 600,
+                                    height: 90,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: TextField(
+                                      controller: _controller,
+                                      onChanged: (value) =>
+                                          {_searchStudent(value)},
+                                      cursorColor: buttonColor,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                                12, 24, 12, 20),
+                                        labelText:
+                                            "zoek op naam of studentnummer",
+                                        errorText: "",
+                                        labelStyle: const TextStyle(
+                                            color: Colors.black),
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           borderSide: const BorderSide(
-                                              color: Colors.black)),
-                                      suffixIcon: _addStudentController
-                                              .text.isEmpty
-                                          ? null
-                                          : IconButton(
-                                              icon: const Icon(
-                                                Icons.clear,
-                                                color: buttonColor,
+                                              color: buttonColor),
+                                        ),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Colors.black)),
+                                        suffixIcon: _controller.text.isEmpty
+                                            ? null
+                                            : IconButton(
+                                                icon: const Icon(
+                                                  Icons.clear,
+                                                  color: buttonColor,
+                                                ),
+                                                onPressed:
+                                                    _clearSearchTextField,
                                               ),
-                                              onPressed: _clearStudentTextField,
-                                            ),
-                                    ),
-                                  ))
-                            ],
+                                      ),
+                                    ))),
+                          ),
+                        ],
+                      ),
+                    ),
+              editingStudents
+                  ? Expanded(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: buttonColor, width: 3),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          margin: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(10),
+                          child: TextField(
+                            controller: _csvTextController,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            onChanged: (value) => {}, //on change
+                            style: const TextStyle(fontSize: 21),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            cursorColor: buttonColor,
                           )),
                     )
-                  : Container(),
-              Expanded(
-                  child: Container(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: ListView.builder(
-                    itemCount: AdminStart.searchStudents.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _buildRow(index);
-                    }),
-              )),
+                  : Expanded(
+                      child: Container(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: ListView.builder(
+                          itemCount: AdminStart.searchStudents.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _buildRow(index);
+                          }),
+                    )),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  editingStudents
-                      ? CustomButton(
-                          onPressed: () {},
-                          width: 80,
-                          height: 80,
-                          borderRadius: 40,
-                          buttonColor: buttonColor,
-                          padding: const EdgeInsets.fromLTRB(10, 10, 16, 12),
-                          margin: const EdgeInsets.all(20),
-                          icon: const Icon(
-                            Icons.upload_file_outlined,
-                            size: 45,
-                          ),
-                        )
-                      : Container(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      wrongFormat
+                          ? Container(
+                              margin: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+                              alignment: Alignment.topLeft,
+                              child: const Text(
+                                "Fout invoerformaat!",
+                                style:
+                                    TextStyle(fontSize: 20, color: buttonColor),
+                              ),
+                            )
+                          : Container(),
+                      editingStudents
+                          ? Container(
+                              margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                              alignment: Alignment.topLeft,
+                              child: const Text(
+                                "CSV formaat:  voornaam naam s-nummer",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
                   const Expanded(child: SizedBox()),
                   editingStudents
                       ? CustomButton(
@@ -298,7 +362,7 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
                           borderRadius: 40,
                           buttonColor: buttonColor,
                           padding: const EdgeInsets.fromLTRB(10, 10, 16, 12),
-                          margin: const EdgeInsets.all(20),
+                          margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                           icon: const Icon(
                             Icons.save,
                             size: 45,
@@ -313,7 +377,7 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
                           borderRadius: 40,
                           buttonColor: buttonColor,
                           padding: const EdgeInsets.fromLTRB(10, 10, 15, 12),
-                          margin: const EdgeInsets.all(20),
+                          margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                           icon: const Icon(
                             Icons.edit,
                             size: 45,
