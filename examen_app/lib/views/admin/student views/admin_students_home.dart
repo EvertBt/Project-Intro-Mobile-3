@@ -59,6 +59,21 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
     setState(() {});
   }
 
+  void getStudents() async {
+    if (AdminStart.searchStudents.isEmpty) {
+      await Future.delayed(const Duration(milliseconds: 10)).then((value) => {
+            if (AdminStart.students.isEmpty)
+              {getStudents()}
+            else
+              {
+                for (Student student in AdminStart.students)
+                  {AdminStart.searchStudents.add(student)}
+              }
+          });
+      setState(() {});
+    }
+  }
+
   Widget _buildRow(int i) {
     return Container(
       width: double.infinity,
@@ -106,7 +121,7 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
   @override
   void initState() {
     super.initState();
-    _clearSearchTextField();
+    getStudents();
   }
 
   @override
