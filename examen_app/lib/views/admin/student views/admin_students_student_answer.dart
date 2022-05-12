@@ -41,7 +41,7 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
     if (question is MultipleChoiceQuestion) {
       return MultipleChoiceAnswer(question: question);
     } else if (question is CodeCorrectionQuestion) {
-      return codeCorrectionAnswer(context, question, codeController);
+      return codeCorrectionQuestion(context, question, isExam: false);
     } else {
       return openQuestionAnswer(context, question, controller);
     }
@@ -126,9 +126,9 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                       Expanded(
                           child: loadQuestion(
                               context,
-                              AdminStart.selectedStudent!.exam!.questions![
-                                  AdminStart.selectedStudent!.exam!.questions!
-                                      .indexOf(AdminStart.selectedQuestion!)]))
+                              AdminStart.exam.questions![AdminStart
+                                  .selectedStudent!.exam!.questions!
+                                  .indexOf(AdminStart.selectedQuestion!)]))
                     ],
                   ),
                 ),
