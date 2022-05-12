@@ -1,5 +1,7 @@
 import 'package:examen_app/config/constants.dart';
+import 'package:examen_app/firebase/exammanager.dart';
 import 'package:examen_app/firebase/model/student.dart';
+import 'package:examen_app/helpers/widgets/button.dart';
 import 'package:examen_app/views/admin/admin_start.dart';
 import 'package:examen_app/views/admin/admin_students.dart';
 import 'package:examen_app/views/admin/student%20views/admin_students_student_answer.dart';
@@ -54,6 +56,7 @@ Future<Location> fetchAlbum() async {
 }
 
 class _AdminStudentDetails extends State<AdminStudentDetails> {
+  final TextEditingController scoreController = TextEditingController();
   late Future<Location> futureLocation;
   //Gebruik AdminStart.selectedStudent
   //Zet AdminStart.selectedQuestion voor je switchState naar student_answer gaat
@@ -123,6 +126,12 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
             ],
           )),
     );
+  }
+
+  @override
+  void initState() {
+    scoreController.text = AdminStart.selectedStudent!.score.toString();
+    super.initState();
   }
 
   @override
@@ -254,7 +263,11 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                                 width: 60,
                                 margin: const EdgeInsets.only(right: 5),
                                 child: TextField(
-                                  onChanged: (value) => {},
+                                  controller: scoreController,
+                                  onChanged: (value) => {
+                                    AdminStart.selectedStudent!.score =
+                                        int.parse(value)
+                                  },
                                   cursorColor: buttonColor,
                                   style: const TextStyle(
                                       fontSize: 30,
@@ -280,7 +293,20 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                                 child: const Text("/20",
                                     style: TextStyle(
                                         fontSize: 30,
-                                        fontWeight: FontWeight.bold)))
+                                        fontWeight: FontWeight.bold))),
+                            CustomButton(
+                                onPressed: () => ExamManager.saveScore(
+                                    AdminStart.selectedStudent!),
+                                padding: EdgeInsets.only(right: 14),
+                                margin: EdgeInsets.only(right: 20),
+                                width: 70,
+                                height: 70,
+                                buttonColor: buttonColor,
+                                icon: Icon(
+                                  Icons.save,
+                                  size: 40,
+                                ),
+                                borderRadius: 35)
                           ]),
                           AdminStart.selectedStudent!.leftAppCount > 0
                               ? Container(
