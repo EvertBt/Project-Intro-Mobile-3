@@ -34,6 +34,7 @@ class ExamManager {
           .collection('students')
           .doc(student.studentNr)
           .set({
+        'score': student.score,
         'leftAppCount': student.leftAppCount,
         'name': student.name,
         'studentNr': student.studentNr,
@@ -61,47 +62,8 @@ class ExamManager {
     await FirebaseFirestore.instance
         .collection('students')
         .doc(student.studentNr)
-        .set({
-      'score': student.score,
-      'leftAppCount': student.leftAppCount,
-      'name': student.name,
-      'studentNr': student.studentNr,
-      'location': student.location,
-      'exam': <String, dynamic>{
-        'duration': student.exam!.duration.inSeconds,
-        'questions': _buildQuestionsMap(student.exam!, forStudent: true)
-      }
-    });
+        .update({'score': student.score});
   }
-
-  // static Future<Exam> getExam() async {
-  //   await _initialize();
-
-  //   var snapshot = await FirebaseFirestore.instance.doc('exams/exam').get();
-  //   Exam exam = Exam(
-  //       title: snapshot.data()!['title'].toString(),
-  //       duration: Duration(
-  //           seconds: int.parse(snapshot.data()!['duration'].toString())),
-  //       questions: _buildQuestionList(snapshot.data()!['questions']));
-
-  //   return exam;
-  // }
-
-  // static Future<Exam> getExamFromStudent(Student student) async {
-  //   await _initialize();
-
-  //   var snapshot = await FirebaseFirestore.instance
-  //       .doc('students/${student.studentNr}')
-  //       .get();
-  //   Map<String, dynamic> _exam = snapshot.data()!['exam'];
-
-  //   Exam exam = Exam(
-  //       title: _exam['title'].toString(),
-  //       duration: Duration(seconds: int.parse(_exam['duration'].toString())),
-  //       questions: _buildQuestionList(_exam['questions']));
-
-  //   return exam;
-  // }
 
   static Future<void> pushExamToStudent(Exam exam, Student student) async {
     await _initialize();
