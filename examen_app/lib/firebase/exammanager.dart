@@ -61,7 +61,17 @@ class ExamManager {
     await FirebaseFirestore.instance
         .collection('students')
         .doc(student.studentNr)
-        .set({'score': student.score});
+        .set({
+      'score': student.score,
+      'leftAppCount': student.leftAppCount,
+      'name': student.name,
+      'studentNr': student.studentNr,
+      'location': student.location,
+      'exam': <String, dynamic>{
+        'duration': student.exam!.duration.inSeconds,
+        'questions': _buildQuestionsMap(student.exam!, forStudent: true)
+      }
+    });
   }
 
   // static Future<Exam> getExam() async {
