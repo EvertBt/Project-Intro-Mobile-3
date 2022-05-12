@@ -56,6 +56,14 @@ class ExamManager {
     return exam;
   }
 
+  static Future<void> saveScore(Student student) async {
+    await _initialize();
+    await FirebaseFirestore.instance
+        .collection('students')
+        .doc(student.studentNr)
+        .set({'score': student.score});
+  }
+
   // static Future<Exam> getExam() async {
   //   await _initialize();
 
@@ -111,12 +119,16 @@ class ExamManager {
         .then((value) => {
               for (var student in value.docs)
                 {
-                  students.add(Student(
+                  students.add(
+                    Student(
                       name: student['name'],
                       studentNr: student['studentNr'],
                       location: student['location'],
                       leftAppCount: student['leftAppCount'],
-                      exam: _buildExam(student['exam'])))
+                      exam: _buildExam(student['exam']),
+                      score: student['score'],
+                    ),
+                  )
                 }
             });
 
