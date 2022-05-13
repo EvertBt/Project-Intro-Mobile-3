@@ -47,12 +47,8 @@ class _AdminStart extends State<AdminStart> {
   void initState() {
     super.initState();
 
-    if (AdminStart.students.isEmpty) {
-      loadStudents();
-    }
-    if (AdminStart.exam.questions == null) {
-      loadExam();
-    }
+    loadStudents();
+    loadExam();
   }
 
   @override

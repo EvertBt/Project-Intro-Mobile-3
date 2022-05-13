@@ -68,16 +68,24 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
 
   double getLat() {
     String location = AdminStart.selectedStudent!.location;
-    List<String> splittedLocation = location.split('&');
-    double lat = double.parse(splittedLocation[0].substring(4));
-    return lat;
+    if (location != "") {
+      List<String> splittedLocation = location.split('&');
+      double lat = double.parse(splittedLocation[0].substring(4));
+      return lat;
+    } else {
+      return 0;
+    }
   }
 
   double getLng() {
     String location = AdminStart.selectedStudent!.location;
-    List<String> splittedLocation = location.split('&');
-    double lng = double.parse(splittedLocation[1].substring(4));
-    return lng;
+    if (location != "") {
+      List<String> splittedLocation = location.split('&');
+      double lng = double.parse(splittedLocation[1].substring(4));
+      return lng;
+    } else {
+      return 0;
+    }
   }
 
   String rightAdress(adress) {
@@ -141,9 +149,12 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                width: 60,
+              ),
               Expanded(child: Container()),
               Text(
-                "Details student",
+                "Details van student: ${AdminStart.selectedStudent!.name}",
                 style: const TextStyle(fontSize: 30),
               ),
               Expanded(child: Container()),
@@ -160,8 +171,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                 Expanded(
                     flex: 6,
                     child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 20.0),
+                        margin: const EdgeInsets.fromLTRB(20, 15, 10, 15),
                         width: 900.0,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -169,8 +179,8 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                               BoxShadow(blurRadius: 5, color: Colors.grey)
                             ],
                             borderRadius: BorderRadius.circular(25)),
-                        child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 20),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(25),
                             child: FlutterMap(
                               options: MapOptions(
                                 center: latLng.LatLng(getLat(), getLng()),
@@ -202,7 +212,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                     flex: 1,
                     child: Container(
                         margin: const EdgeInsets.only(
-                            left: 20.0, right: 20, bottom: 15),
+                            left: 20.0, right: 10, bottom: 15),
                         width: 900.0,
                         height: 100,
                         decoration: BoxDecoration(
@@ -214,22 +224,32 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                         child: Row(
                           children: [
                             Container(
-                                margin: const EdgeInsets.only(left: 50),
+                                margin: const EdgeInsets.only(left: 30),
                                 child: FutureBuilder<Location>(
-                                    future: futureLocation,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return Text(
+                                  future: futureLocation,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Text(
                                             rightAdress(
                                                 snapshot.data!.display_name),
                                             style: const TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold));
-                                      } else {
-                                        return Text('${snapshot.error}');
-                                      }
-                                      ;
-                                    })),
+                                              fontSize: 25,
+                                            )),
+                                      );
+                                    } else {
+                                      return const Text(
+                                        'Locatie kan niet geladen worden',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: buttonColor,
+                                            fontWeight: FontWeight.bold),
+                                      );
+                                    }
+                                    ;
+                                  },
+                                )),
                             Expanded(child: Container()),
                           ],
                         )))
@@ -239,8 +259,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
               child: Column(
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 20.0),
+                    margin: const EdgeInsets.fromLTRB(10, 15, 20, 15),
                     width: 900.0,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -297,12 +316,12 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                             CustomButton(
                                 onPressed: () => ExamManager.saveScore(
                                     AdminStart.selectedStudent!),
-                                padding: EdgeInsets.only(right: 14),
-                                margin: EdgeInsets.only(right: 20),
+                                padding: const EdgeInsets.only(right: 14),
+                                margin: const EdgeInsets.only(right: 20),
                                 width: 70,
                                 height: 70,
                                 buttonColor: buttonColor,
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.save,
                                   size: 40,
                                 ),
@@ -317,7 +336,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                                               .selectedStudent!.leftAppCount
                                               .toString() +
                                           "x verlaten",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.red)),
@@ -327,8 +346,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      width: 810.0,
+                      margin: const EdgeInsets.fromLTRB(10, 0, 20, 15),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: const [
