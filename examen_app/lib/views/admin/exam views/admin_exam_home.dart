@@ -82,6 +82,7 @@ class _AdminExamHome extends State<AdminExamHome> {
   }
 
   void saveExam() {
+    AdminStart.exam.title = "Test Title";
     ExamManager.addNewExam(AdminStart.students, AdminStart.exam);
   }
 
