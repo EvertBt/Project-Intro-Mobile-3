@@ -1,5 +1,4 @@
 import 'package:examen_app/firebase/model/question.dart';
-import 'package:examen_app/views/admin/student%20views/admin_students_add_student.dart';
 import 'package:examen_app/views/admin/student%20views/admin_students_home.dart';
 import 'package:examen_app/views/admin/student%20views/admin_students_student_answer.dart';
 import 'package:examen_app/views/admin/student%20views/admin_students_student_details.dart';
@@ -12,7 +11,7 @@ class AdminStudents extends StatefulWidget {
   State<AdminStudents> createState() => _AdminStudents();
 }
 
-enum AdminStudentState { home, addStudent, studentDetails, studentAnswer }
+enum AdminStudentState { home, studentDetails, studentAnswer }
 
 class _AdminStudents extends State<AdminStudents> {
   AdminStudentState state = AdminStudentState.home;
@@ -29,8 +28,6 @@ class _AdminStudents extends State<AdminStudents> {
     switch (state) {
       case AdminStudentState.home:
         return AdminStudentsHome(switchState: switchState);
-      case AdminStudentState.addStudent:
-        return AdminStudentsAddStudent(switchState: switchState);
       case AdminStudentState.studentDetails:
         return AdminStudentDetails(switchState: switchState);
       case AdminStudentState.studentAnswer:

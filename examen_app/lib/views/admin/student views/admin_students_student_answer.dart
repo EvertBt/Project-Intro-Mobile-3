@@ -20,7 +20,8 @@ class AdminStudentAnswer extends StatefulWidget {
 }
 
 class _AdminStudentAnswer extends State<AdminStudentAnswer> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController studentController = TextEditingController();
+  TextEditingController correctController = TextEditingController();
   TextEditingController codeController = TextEditingController();
   Widget loadQuestion(
     BuildContext context,
@@ -40,10 +41,17 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
     if (question is MultipleChoiceQuestion) {
       return MultipleChoiceAnswer(question: question);
     } else if (question is CodeCorrectionQuestion) {
-      return codeCorrectionAnswer(context, question, codeController);
+      return codeCorrectionQuestion(context, question, isExam: false);
     } else {
       return openQuestionAnswer(context, question, controller);
     }
+  }
+
+  @override
+  void initState() {
+    studentController.text = "!empty!";
+    correctController.text = "!empty!";
+    super.initState();
   }
 
   @override
@@ -58,6 +66,13 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                IconButton(
+                    onPressed: () =>
+                        widget.switchState(AdminStudentState.studentDetails),
+                    icon: new Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    )),
                 Expanded(child: Container()),
                 Text(
                   "Antwoord vraag ${AdminStart.selectedStudent!.exam!.questions!.indexOf(AdminStart.selectedQuestion!) + 1}",
@@ -111,9 +126,9 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                       Expanded(
                           child: loadQuestion(
                               context,
-                              AdminStart.selectedStudent!.exam!.questions![
-                                  AdminStart.selectedStudent!.exam!.questions!
-                                      .indexOf(AdminStart.selectedQuestion!)]))
+                              AdminStart.exam.questions![AdminStart
+                                  .selectedStudent!.exam!.questions!
+                                  .indexOf(AdminStart.selectedQuestion!)]))
                     ],
                   ),
                 ),
@@ -150,7 +165,7 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                                   Container(
                                     margin: const EdgeInsets.only(left: 50),
                                     child: const Text(
-                                      "Antwoord",
+                                      "Antwoord student",
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold),
@@ -162,12 +177,8 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                           Expanded(
                               child: loadAnswer(
                                   context,
-                                  AdminStart.selectedStudent!.exam!.questions![
-                                      AdminStart
-                                          .selectedStudent!.exam!.questions!
-                                          .indexOf(
-                                              AdminStart.selectedQuestion!)],
-                                  controller,
+                                  AdminStart.selectedQuestion!,
+                                  studentController,
                                   codeController))
                         ],
                       ),
@@ -202,7 +213,7 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                                   Container(
                                     margin: const EdgeInsets.only(left: 50),
                                     child: const Text(
-                                      "Antwoord",
+                                      "Correct antwoord",
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold),
@@ -214,12 +225,10 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                           Expanded(
                               child: loadAnswer(
                                   context,
-                                  AdminStart.selectedStudent!.exam!.questions![
-                                      AdminStart
-                                          .selectedStudent!.exam!.questions!
-                                          .indexOf(
-                                              AdminStart.selectedQuestion!)],
-                                  controller,
+                                  AdminStart.exam.questions![AdminStart
+                                      .selectedStudent!.exam!.questions!
+                                      .indexOf(AdminStart.selectedQuestion!)],
+                                  correctController,
                                   codeController))
                         ],
                       ),

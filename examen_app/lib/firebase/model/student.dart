@@ -6,11 +6,13 @@ class Student {
       this.studentNr = "",
       this.location = "",
       this.exam,
-      this.leftAppCount = 0});
+      this.leftAppCount = 0,
+      this.score = 0});
 
   String name;
   String studentNr;
   String location;
   int leftAppCount;
+  int score;
   Exam? exam;
 }

@@ -7,24 +7,25 @@ import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/a11y-light.dart';
 
 Widget codeCorrectionQuestion(
-  BuildContext context,
-  CodeCorrectionQuestion question,
-) {
+    BuildContext context, CodeCorrectionQuestion question,
+    {bool isExam = true}) {
   return Column(
     children: [
-      Container(
-        alignment: Alignment.centerLeft,
-        margin: const EdgeInsets.fromLTRB(30, 40, 30, 0),
-        child: const Text(
-          "Pas de volgende code aan zodat ze correct werkt",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-      ),
+      isExam
+          ? Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.fromLTRB(30, 40, 30, 0),
+              child: const Text(
+                "Pas de volgende code aan zodat ze correct werkt",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            )
+          : Container(),
       Container(
         margin: const EdgeInsets.fromLTRB(30, 30, 30, 0),
         alignment: Alignment.centerLeft,
         child: HighlightView(
-          formatCode(question.question),
+          formatCode(isExam ? question.question : question.answer),
           language: "C#",
           theme: a11yLightTheme,
           textStyle: const TextStyle(fontSize: 20),
