@@ -69,13 +69,14 @@ class _AdminExamHome extends State<AdminExamHome> {
   }
 
   void addMultipleChoice() {
-    Question newMultipleChoice = MultipleChoiceQuestion();
+    MultipleChoiceQuestion newMultipleChoice =
+        MultipleChoiceQuestion(options: ["optie 1"], answer: "optie 1");
     AdminStart.selectedQuestion = newMultipleChoice;
     widget.switchState(AdminExamState.multipleChoice);
   }
 
   void addCodeCorrection() {
-    Question newCodeCorrection = CodeCorrectionQuestion();
+    CodeCorrectionQuestion newCodeCorrection = CodeCorrectionQuestion();
     AdminStart.selectedQuestion = newCodeCorrection;
     widget.switchState(AdminExamState.codeCorrection);
   }
