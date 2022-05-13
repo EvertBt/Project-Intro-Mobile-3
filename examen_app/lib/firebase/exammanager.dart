@@ -110,6 +110,7 @@ class ExamManager {
 
   static Future<void> _addExam(Exam exam) async {
     await FirebaseFirestore.instance.collection('exams').doc('exam').set({
+      'title': exam.title,
       'duration': exam.duration.inSeconds,
       'questions': _buildQuestionsMap(exam)
     });
