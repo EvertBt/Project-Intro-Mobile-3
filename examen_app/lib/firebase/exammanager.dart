@@ -40,6 +40,7 @@ class ExamManager {
         'studentNr': student.studentNr,
         'location': student.location,
         'exam': <String, dynamic>{
+          'title': exam.title,
           'duration': exam.duration.inSeconds,
           'questions': _buildQuestionsMap(exam, forStudent: true)
         }
