@@ -4,6 +4,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     this.onPressed,
     this.buttonText = "",
+    this.textColor = Colors.white,
     this.borderRadius = 25,
     this.fontSize = 25,
     this.margin = const EdgeInsets.all(0),
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
   final double height;
   final EdgeInsetsGeometry margin;
   final String buttonText;
+  final Color textColor;
   final double fontSize;
   final EdgeInsets? padding;
   final Color buttonColor;
@@ -55,7 +57,7 @@ class CustomButton extends StatelessWidget {
                     : null,
                 child: Text(
                   buttonText,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: fontSize, color: textColor),
                 ),
               ),
               Expanded(child: Container()),

@@ -58,83 +58,88 @@ class _AdminStart extends State<AdminStart> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(homeRoute, (route) => false);
-          return false;
-        },
-        child: Scaffold(
-            body: _widgetOptions.elementAt(_selectedIndex),
-            bottomNavigationBar: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    width: 100.0,
-                    height: 70.0,
-                    padding: const EdgeInsets.only(left: 15.0),
-                    decoration: const BoxDecoration(
-                      color: primaryColor,
+      onWillPop: () async {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(homeRoute, (route) => false);
+        return false;
+      },
+      child: Scaffold(
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 100.0,
+              height: 70.0,
+              padding: const EdgeInsets.only(left: 15.0),
+              decoration: const BoxDecoration(
+                color: primaryColor,
+              ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 13.0),
+                child: const Image(
+                  image: AssetImage('assets/logosmall.png'),
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 70,
+                child: BottomNavigationBar(
+                  elevation: 0,
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.people,
+                        size: 40,
+                      ),
+                      label: 'Studenten',
                     ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 13.0),
-                      child: const Image(
-                        image: AssetImage('assets/logosmall.png'),
-                        filterQuality: FilterQuality.high,
+                    BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.book,
+                        size: 40,
                       ),
-                    )),
-                Expanded(
-                    child: SizedBox(
-                  height: 70,
-                  child: BottomNavigationBar(
-                    elevation: 0,
-                    items: const [
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.people,
-                          size: 40,
-                        ),
-                        label: 'Studenten',
+                      label: 'Examen',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.lock,
+                        size: 40,
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.book,
-                          size: 40,
-                        ),
-                        label: 'Examen',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.lock,
-                          size: 40,
-                        ),
-                        label: 'Wachtwoord wijzigen',
-                      ),
-                    ],
-                    currentIndex: _selectedIndex,
-                    backgroundColor: primaryColor,
-                    selectedItemColor: Colors.white,
-                    onTap: _onItemTapped,
-                  ),
-                )),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: primaryColor,
-                  ),
-                  height: 70.0,
-                  width: 100.0,
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            homeRoute, (route) => false);
-                      },
-                      style: TextButton.styleFrom(primary: Colors.white),
-                      child: const Icon(
-                        Icons.home,
-                        color: Colors.white,
-                        size: 45,
-                      )),
-                )
-              ],
-            )));
+                      label: 'Wachtwoord wijzigen',
+                    ),
+                  ],
+                  currentIndex: _selectedIndex,
+                  backgroundColor: primaryColor,
+                  selectedItemColor: Colors.white,
+                  onTap: _onItemTapped,
+                ),
+              ),
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                color: primaryColor,
+              ),
+              height: 70.0,
+              width: 100.0,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(homeRoute, (route) => false);
+                },
+                style: TextButton.styleFrom(primary: Colors.white),
+                child: const Icon(
+                  Icons.home,
+                  color: Colors.white,
+                  size: 45,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
