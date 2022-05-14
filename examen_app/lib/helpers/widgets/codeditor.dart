@@ -8,12 +8,14 @@ class CodeEditor extends StatefulWidget {
   const CodeEditor({
     required this.question,
     required this.controller,
+    this.isQuestion = false,
     this.isExam = true,
     Key? key,
   }) : super(key: key);
 
   final CodeCorrectionQuestion question;
   final TextEditingController controller;
+  final bool isQuestion;
   final bool isExam;
 
   @override
@@ -24,7 +26,19 @@ class _CodeEditor extends State<CodeEditor> {
   @override
   Widget build(BuildContext context) {
     if (widget.controller.text == "") {
-      widget.controller.text = formatCode(widget.question.question);
+      if (widget.isQuestion) {
+        if (widget.question.question == "") {
+          widget.controller.text = widget.question.question;
+        } else {
+          widget.controller.text = formatCode(widget.question.question);
+        }
+      } else {
+        if (widget.question.answer == "") {
+          widget.controller.text = widget.question.question;
+        } else {
+          widget.controller.text = formatCode(widget.question.question);
+        }
+      }
     }
     void enterText(String text, {int offset = 0}) {
       String t = widget.controller.text;
@@ -46,11 +60,16 @@ class _CodeEditor extends State<CodeEditor> {
           controller: widget.controller,
           keyboardType: TextInputType.multiline,
           maxLines: null,
-          onChanged: (value) => {widget.question.answer = value},
+          onChanged: (value) => {
+            if (widget.isQuestion)
+              {widget.question.question = value}
+            else
+              {widget.question.answer = value},
+          },
           style: const TextStyle(fontSize: 25),
           decoration: const InputDecoration(
             border: InputBorder.none,
-            hintText: "vul hier je antwoord in",
+            hintText: "",
           ),
           cursorColor: buttonColor,
         )),
