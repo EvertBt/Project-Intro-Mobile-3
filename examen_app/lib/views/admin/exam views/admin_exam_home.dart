@@ -7,11 +7,13 @@ import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/helpers/widgets/button.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
 import 'package:examen_app/views/admin/admin_start.dart';
-import 'package:examen_app/views/questions/openquestion.dart';
 import 'package:flutter/material.dart';
 
 class AdminExamHome extends StatefulWidget {
   const AdminExamHome({required this.switchState, Key? key}) : super(key: key);
+
+  static String title = "";
+  static Duration duration = Duration();
 
   final void Function(AdminExamState) switchState;
 
@@ -20,7 +22,15 @@ class AdminExamHome extends StatefulWidget {
 }
 
 class _AdminExamHome extends State<AdminExamHome> {
-  TextEditingController timelimitController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    titleController.text = getTitle();
+    AdminExamHome.duration = AdminStart.exam.duration;
+  }
 
   void editQuestion() {
     switch (AdminStart.selectedQuestion!.type) {
@@ -40,11 +50,15 @@ class _AdminExamHome extends State<AdminExamHome> {
     }
   }
 
-  String getTimelimit() {
-    if (AdminStart.exam.duration != null) {
-      return AdminStart.exam.duration.toString();
+  Duration getTimelimit() {
+    return AdminExamHome.duration;
+  }
+
+  String getTitle() {
+    if (AdminStart.exam.title == "") {
+      return "Title";
     }
-    return "0";
+    return AdminStart.exam.title;
   }
 
   void removeQuestion(int i) {
@@ -82,7 +96,8 @@ class _AdminExamHome extends State<AdminExamHome> {
   }
 
   void saveExam() {
-    AdminStart.exam.title = "Test Title";
+    AdminStart.exam.title = AdminExamHome.title;
+    AdminStart.exam.duration = AdminExamHome.duration;
     ExamManager.addNewExam(AdminStart.students, AdminStart.exam);
   }
 
@@ -92,10 +107,11 @@ class _AdminExamHome extends State<AdminExamHome> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Center(
-            child: Text(
-          'Examen',
-          style: TextStyle(fontSize: 30.0),
-        )),
+          child: Text(
+            'Examen',
+            style: TextStyle(fontSize: 30.0),
+          ),
+        ),
         backgroundColor: primaryColor,
       ),
       body: Center(
@@ -103,103 +119,189 @@ class _AdminExamHome extends State<AdminExamHome> {
           children: [
             Expanded(
               flex: 5,
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
-                width: 700.0,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(blurRadius: 5, color: Colors.grey)
-                    ],
-                    borderRadius: BorderRadius.circular(25)),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 70,
+              child: Column(
+                children: [
+                  Container(
+                    height: 70,
+                    width: double.infinity,
+                    margin: const EdgeInsets.fromLTRB(20, 20, 10, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(blurRadius: 5, color: Colors.grey)
+                      ],
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 30),
+                          child: const Text(
+                            "Titel:",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 30, 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(23),
+                            color: buttonColor,
+                          ),
+                          child: Container(
+                            width: 250,
+                            margin: const EdgeInsets.all(3),
+                            padding: const EdgeInsets.fromLTRB(15, 18, 0, 0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+                            child: TextField(
+                              controller: titleController,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 1,
+                              style: const TextStyle(fontSize: 25),
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: getTitle(),
+                                  counterText: ""),
+                              cursorColor: buttonColor,
+                              onChanged: (value) =>
+                                  {AdminExamHome.title = value},
+                            ),
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                        Container(
+                          width: 60,
+                          margin: const EdgeInsets.fromLTRB(0, 5, 30, 5),
+                          child: CustomButton(
+                            width: double.infinity,
+                            height: 75,
+                            buttonColor: buttonColor,
+                            onPressed: () {
+                              titleController.text = AdminStart.exam.title;
+                            },
+                            padding: const EdgeInsets.fromLTRB(0, 7, 7, 10),
+                            borderRadius: 19,
+                            icon: const Icon(
+                              Icons.refresh,
+                              size: 45,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(20, 20, 10, 20),
+                      width: double.infinity,
                       decoration: BoxDecoration(
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3))
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25.0)),
-                      child: Row(
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 5, color: Colors.grey)
+                        ],
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 50),
-                              child: const Text(
-                                "Vragen",
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
                           Container(
-                            width: 60,
-                            margin: const EdgeInsets.fromLTRB(0, 5, 30, 5),
-                            child: CustomButton(
-                              width: double.infinity,
-                              height: 75,
-                              buttonColor: buttonColor,
-                              onPressed: () {
-                                resetExam();
-                              },
-                              padding: const EdgeInsets.fromLTRB(0, 7, 7, 10),
-                              borderRadius: 19,
-                              icon: const Icon(
-                                Icons.refresh,
-                                size: 45,
+                            height: 70,
+                            decoration: BoxDecoration(
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  )
+                                ],
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(25.0)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 30),
+                                    child: const Text(
+                                      "Vragen",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 60,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 5, 30, 5),
+                                  child: CustomButton(
+                                    width: double.infinity,
+                                    height: 75,
+                                    buttonColor: buttonColor,
+                                    onPressed: () {
+                                      resetExam(); //reset vragen
+                                    },
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 7, 7, 10),
+                                    borderRadius: 19,
+                                    icon: const Icon(
+                                      Icons.refresh,
+                                      size: 45,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 7,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(bottom: 20, top: 20),
+                              child: ListView.builder(
+                                itemCount: AdminStart.exam.questions?.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return _buildQuestionsColumn(index);
+                                },
                               ),
                             ),
                           ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                Container(
+                                  width: 80,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 20, 20),
+                                  child: CustomButton(
+                                    width: double.infinity,
+                                    height: 75,
+                                    buttonColor: buttonColor,
+                                    onPressed: () {
+                                      removeQuestions();
+                                    },
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 10, 17, 10),
+                                    borderRadius: 19,
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      size: 45,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    Expanded(
-                      flex: 7,
-                      child: Container(
-                        padding: const EdgeInsets.only(bottom: 20, top: 20),
-                        child: ListView.builder(
-                          itemCount: AdminStart.exam.questions?.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _buildQuestionsColumn(index);
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(),
-                            ),
-                            Container(
-                              width: 80,
-                              margin: const EdgeInsets.fromLTRB(0, 0, 20, 20),
-                              child: CustomButton(
-                                width: double.infinity,
-                                height: 75,
-                                buttonColor: buttonColor,
-                                onPressed: () {
-                                  removeQuestions();
-                                },
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 17, 10),
-                                borderRadius: 19,
-                                icon: const Icon(
-                                  Icons.delete,
-                                  size: 45,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ))
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -220,6 +322,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                         children: [
                           Container(
                             width: double.infinity,
+                            height: 70,
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -229,6 +332,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Container(
+                              width: 250,
                               margin: const EdgeInsets.symmetric(vertical: 15),
                               child: const Text(
                                 "Tijdslimiet",
@@ -242,10 +346,9 @@ class _AdminExamHome extends State<AdminExamHome> {
                             child: Container(
                               margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: DurationPicker(
-                                duration: AdminStart.exam.duration,
+                                duration: AdminExamHome.duration,
                                 onChange: (value) => {
-                                  setState(
-                                      () => AdminStart.exam.duration = value)
+                                  setState(() => AdminExamHome.duration = value)
                                 },
                                 snapToMins: 5,
                               ),
