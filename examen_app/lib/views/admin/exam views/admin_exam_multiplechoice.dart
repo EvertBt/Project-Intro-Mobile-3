@@ -51,6 +51,9 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
 
     AdminExamMultipleChoice.answerIndex = getAnswerIndex();
     AdminExamMultipleChoice.nextIndex = getOptionsCount();
+
+    questionController.text = AdminStart.selectedQuestion!.question;
+    maxScoreController.text = AdminStart.selectedQuestion!.maxScore.toString();
   }
 
   int getAnswerIndex() {
@@ -69,7 +72,6 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
     } else {
       AdminExamMultipleChoice.question = AdminStart.selectedQuestion!.question;
     }
-    questionController.text = AdminStart.selectedQuestion!.question;
     return AdminExamMultipleChoice.question;
   }
 
@@ -79,8 +81,15 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
     } else {
       AdminExamMultipleChoice.maxScore = AdminStart.selectedQuestion!.maxScore;
     }
-    maxScoreController.text = AdminStart.selectedQuestion!.maxScore.toString();
     return AdminExamMultipleChoice.maxScore.toString();
+  }
+
+  int parseMaxScore(String value) {
+    if (value.isEmpty) {
+      return 0;
+    } else {
+      return int.parse(value);
+    }
   }
 
   String getOption(int i) {
@@ -135,10 +144,13 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
     setState(() {});
   }
 
-  bool checkMultipleAnswers() {
+  bool checkValidAnswers() {
+    AdminExamMultipleChoice.question = questionController.text;
+    AdminExamMultipleChoice.maxScore = parseMaxScore(maxScoreController.text);
     setState(() {});
     for (int i = 0; i < getOptionsCount(); i++) {
       for (int j = i + 1; j < getOptionsCount(); j++) {
+        //multiple options are the answer
         if (AdminExamMultipleChoice.options[i] ==
             AdminExamMultipleChoice.options[j]) {
           if (AdminExamMultipleChoice.options[i] ==
@@ -152,7 +164,9 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
   }
 
   void saveQuestion() {
-    if (!checkMultipleAnswers()) {
+    if (!checkValidAnswers()) {
+      print(AdminExamMultipleChoice.answer);
+
       AdminStart.selectedQuestion!.question = AdminExamMultipleChoice.question;
       AdminStart.selectedQuestion!.answer = AdminExamMultipleChoice.answer;
       question!.options = AdminExamMultipleChoice.options;
@@ -278,16 +292,8 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
                                               counterText: ""),
                                           cursorColor: buttonColor,
                                           onChanged: (value) => {
-                                            if (value.isEmpty)
-                                              {
-                                                AdminExamMultipleChoice
-                                                    .maxScore = 0
-                                              }
-                                            else
-                                              {
-                                                AdminExamMultipleChoice
-                                                    .maxScore = int.parse(value)
-                                              }
+                                            AdminExamMultipleChoice.maxScore =
+                                                parseMaxScore(value)
                                           },
                                         ),
                                       ),
@@ -358,7 +364,7 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
                                   Container(
                                     margin: const EdgeInsets.only(left: 50),
                                     child: const Text(
-                                      "Antwoorden",
+                                      "Opties",
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold),
@@ -486,6 +492,8 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
                 cursorColor: buttonColor,
                 onChanged: (value) => {
                   AdminExamMultipleChoice.options[i] = value,
+                  if (i == AdminExamMultipleChoice.answerIndex)
+                    {AdminExamMultipleChoice.answer = value},
                 },
               ),
             ),
@@ -576,8 +584,11 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
                     decoration: InputDecoration(
                         border: InputBorder.none, hintText: getOption(i)),
                     cursorColor: buttonColor,
-                    onChanged: (value) =>
-                        AdminExamMultipleChoice.options[i] = value,
+                    onChanged: (value) => {
+                      AdminExamMultipleChoice.options[i] = value,
+                      if (i == AdminExamMultipleChoice.answerIndex)
+                        {AdminExamMultipleChoice.answer = value},
+                    },
                   ),
                 ),
                 SizedBox(

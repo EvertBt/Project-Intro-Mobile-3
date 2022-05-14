@@ -25,13 +25,21 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
   TextEditingController answerController = TextEditingController();
   TextEditingController maxScoreController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+
+    questionController.text = AdminStart.selectedQuestion!.question;
+    maxScoreController.text = AdminStart.selectedQuestion!.maxScore.toString();
+    answerController.text = AdminStart.selectedQuestion!.answer;
+  }
+
   String getQuestion() {
     if (AdminStart.selectedQuestion!.question == "") {
       AdminExamOpenEnded.question = "vul hier de vraag in";
     } else {
       AdminExamOpenEnded.question = AdminStart.selectedQuestion!.question;
     }
-    questionController.text = AdminStart.selectedQuestion!.question;
     return AdminExamOpenEnded.question;
   }
 
@@ -41,8 +49,15 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
     } else {
       AdminExamOpenEnded.maxScore = AdminStart.selectedQuestion!.maxScore;
     }
-    maxScoreController.text = AdminStart.selectedQuestion!.maxScore.toString();
     return AdminExamOpenEnded.maxScore.toString();
+  }
+
+  int parseMaxScore(String value) {
+    if (value.isEmpty) {
+      return 0;
+    } else {
+      return int.parse(value);
+    }
   }
 
   String getAnswer() {
@@ -51,11 +66,14 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
     } else {
       AdminExamOpenEnded.answer = AdminStart.selectedQuestion!.answer;
     }
-    answerController.text = AdminStart.selectedQuestion!.answer;
     return AdminExamOpenEnded.answer;
   }
 
   void saveQuestion() {
+    AdminExamOpenEnded.question = questionController.text;
+    AdminExamOpenEnded.maxScore = parseMaxScore(maxScoreController.text);
+    AdminExamOpenEnded.answer = answerController.text;
+
     AdminStart.selectedQuestion!.question = AdminExamOpenEnded.question;
     AdminStart.selectedQuestion!.answer = AdminExamOpenEnded.answer;
     AdminStart.selectedQuestion!.maxScore = AdminExamOpenEnded.maxScore;
@@ -71,32 +89,32 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: TextButton(
-            onPressed: () => {widget.switchState(AdminExamState.home)},
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            style: TextButton.styleFrom(
-              primary: buttonColor,
-              onSurface: Colors.white,
-            ),
+      appBar: AppBar(
+        leading: TextButton(
+          onPressed: () => {widget.switchState(AdminExamState.home)},
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
           ),
-          automaticallyImplyLeading: false,
-          title: const Center(
-            child: Text(
-              'Open vraag toevoegen',
-              style: TextStyle(fontSize: 30.0),
-            ),
+          style: TextButton.styleFrom(
+            primary: buttonColor,
+            onSurface: Colors.white,
           ),
-          backgroundColor: primaryColor,
         ),
-        body: Center(
-          child: Column(
-            children: [
-              Expanded(
-                  child: Row(
+        automaticallyImplyLeading: false,
+        title: const Center(
+          child: Text(
+            'Open vraag toevoegen',
+            style: TextStyle(fontSize: 30.0),
+          ),
+        ),
+        backgroundColor: primaryColor,
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: Row(
                 children: [
                   Expanded(
                     child: Container(
@@ -179,13 +197,8 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
                                               counterText: ""),
                                           cursorColor: buttonColor,
                                           onChanged: (value) => {
-                                            if (value.isEmpty)
-                                              {AdminExamOpenEnded.maxScore = 0}
-                                            else
-                                              {
-                                                AdminExamOpenEnded.maxScore =
-                                                    int.parse(value)
-                                              }
+                                            AdminExamOpenEnded.maxScore =
+                                                parseMaxScore(value)
                                           },
                                         ),
                                       ),
@@ -231,95 +244,102 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
                     ),
                   ),
                   Expanded(
-                      child: Container(
-                    margin: const EdgeInsets.fromLTRB(20, 20, 10, 0),
-                    decoration: BoxDecoration(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(20, 20, 10, 0),
+                      decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: const [
                           BoxShadow(blurRadius: 5, color: Colors.grey)
                         ],
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 70,
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              )
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(25.0),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 70,
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3),
+                                )
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(left: 50),
+                                  child: const Text(
+                                    "Antwoord",
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  "Antwoord",
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.all(30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(23),
+                                color: buttonColor,
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(3),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 10, 10, 30),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: TextField(
+                                  controller: answerController,
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: null,
+                                  style: const TextStyle(fontSize: 25),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: getAnswer(),
+                                  ),
+                                  cursorColor: buttonColor,
+                                  onChanged: (value) =>
+                                      AdminExamOpenEnded.answer = value,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                            child: Container(
-                                margin: const EdgeInsets.all(30),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(23),
-                                  color: buttonColor,
-                                ),
-                                child: Container(
-                                  margin: const EdgeInsets.all(3),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 10, 10, 30),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white,
-                                  ),
-                                  child: TextField(
-                                    controller: answerController,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    style: const TextStyle(fontSize: 25),
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: getAnswer()),
-                                    cursorColor: buttonColor,
-                                    onChanged: (value) =>
-                                        AdminExamOpenEnded.answer = value,
-                                  ),
-                                )))
-                      ],
+                        ],
+                      ),
                     ),
-                  ))
+                  )
                 ],
-              )),
-              CustomButton(
-                width: 600,
-                height: 80,
-                buttonColor: buttonColor,
-                onPressed: () {
-                  saveQuestion();
-                },
-                margin: const EdgeInsets.symmetric(vertical: 30),
-                padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
-                buttonText: "Vraag opslaan",
-                fontSize: 35,
-                borderRadius: 25,
-                icon: const Icon(
-                  Icons.save,
-                  size: 45,
-                ),
-              )
-            ],
-          ),
-        ));
+              ),
+            ),
+            CustomButton(
+              width: 600,
+              height: 80,
+              buttonColor: buttonColor,
+              onPressed: () {
+                saveQuestion();
+              },
+              margin: const EdgeInsets.symmetric(vertical: 30),
+              padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
+              buttonText: "Vraag opslaan",
+              fontSize: 35,
+              borderRadius: 25,
+              icon: const Icon(
+                Icons.save,
+                size: 45,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

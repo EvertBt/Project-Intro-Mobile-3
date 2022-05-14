@@ -1,9 +1,9 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/codecorrectionquestion.dart';
 import 'package:examen_app/helpers/widgets/button.dart';
+import 'package:examen_app/helpers/widgets/codeditor.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
 import 'package:examen_app/views/admin/admin_start.dart';
-import 'package:examen_app/views/questions/codecorrection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,23 +27,15 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
   TextEditingController answerController = TextEditingController();
   TextEditingController maxScoreController = TextEditingController();
 
+  CodeCorrectionQuestion question = CodeCorrectionQuestion();
+
   @override
   void initState() {
     super.initState();
 
-    questionController.text = getQuestion();
-    answerController.text = getAnswer();
-    maxScoreController.text = getMaxScore();
-  }
-
-  String getQuestion() {
-    if (AdminStart.selectedQuestion!.question == "") {
-      AdminExamCodeCorrection.question = "vul hier de vraag in";
-    } else {
-      AdminExamCodeCorrection.question = AdminStart.selectedQuestion!.question;
-    }
     questionController.text = AdminStart.selectedQuestion!.question;
-    return AdminExamCodeCorrection.question;
+    maxScoreController.text = AdminStart.selectedQuestion!.maxScore.toString();
+    answerController.text = AdminStart.selectedQuestion!.answer;
   }
 
   String getMaxScore() {
@@ -52,21 +44,22 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
     } else {
       AdminExamCodeCorrection.maxScore = AdminStart.selectedQuestion!.maxScore;
     }
-    maxScoreController.text = AdminStart.selectedQuestion!.maxScore.toString();
     return AdminExamCodeCorrection.maxScore.toString();
   }
 
-  String getAnswer() {
-    if (AdminStart.selectedQuestion!.answer == "") {
-      AdminExamCodeCorrection.answer = "vul hier het antwoord in";
+  int parseMaxScore(String value) {
+    if (value.isEmpty) {
+      return 0;
     } else {
-      AdminExamCodeCorrection.answer = AdminStart.selectedQuestion!.answer;
+      return int.parse(value);
     }
-    answerController.text = AdminStart.selectedQuestion!.answer;
-    return AdminExamCodeCorrection.answer;
   }
 
   void saveQuestion() {
+    AdminExamCodeCorrection.question = questionController.text;
+    AdminExamCodeCorrection.maxScore = parseMaxScore(maxScoreController.text);
+    AdminExamCodeCorrection.answer = answerController.text;
+
     AdminStart.selectedQuestion!.question = questionController.text;
     AdminStart.selectedQuestion!.answer = answerController.text;
     AdminStart.selectedQuestion!.maxScore = AdminExamCodeCorrection.maxScore;
@@ -84,21 +77,23 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
     return Scaffold(
       appBar: AppBar(
         leading: TextButton(
-            onPressed: () => {widget.switchState(AdminExamState.home)},
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            style: TextButton.styleFrom(
-              primary: buttonColor,
-              onSurface: Colors.white,
-            )),
+          onPressed: () => {widget.switchState(AdminExamState.home)},
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          style: TextButton.styleFrom(
+            primary: buttonColor,
+            onSurface: Colors.white,
+          ),
+        ),
         automaticallyImplyLeading: false,
         title: const Center(
-            child: Text(
-          'Code correction vraag toevoegen',
-          style: TextStyle(fontSize: 30.0),
-        )),
+          child: Text(
+            'Code correction vraag toevoegen',
+            style: TextStyle(fontSize: 30.0),
+          ),
+        ),
         backgroundColor: primaryColor,
       ),
       body: Center(
@@ -186,16 +181,8 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
                                               counterText: ""),
                                           cursorColor: buttonColor,
                                           onChanged: (value) => {
-                                            if (value.isEmpty)
-                                              {
-                                                AdminExamCodeCorrection
-                                                    .maxScore = 0
-                                              }
-                                            else
-                                              {
-                                                AdminExamCodeCorrection
-                                                    .maxScore = int.parse(value)
-                                              }
+                                            AdminExamCodeCorrection.maxScore =
+                                                parseMaxScore(value)
                                           },
                                         ),
                                       ),
@@ -206,11 +193,27 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
                             ),
                           ),
                           Expanded(
-                            child: codeCorrectionAnswer(
-                                context,
-                                AdminStart.selectedQuestion
-                                    as CodeCorrectionQuestion,
-                                questionController),
+                            child: Container(
+                              margin: const EdgeInsets.all(30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(23),
+                                color: buttonColor,
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(3),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: CodeEditor(
+                                  controller: questionController,
+                                  question: question,
+                                  isQuestion: true,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -252,11 +255,26 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
                                 ],
                               )),
                           Expanded(
-                            child: codeCorrectionAnswer(
-                                context,
-                                AdminStart.selectedQuestion
-                                    as CodeCorrectionQuestion,
-                                answerController),
+                            child: Container(
+                              margin: const EdgeInsets.all(30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(23),
+                                color: buttonColor,
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(3),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: CodeEditor(
+                                  controller: answerController,
+                                  question: question,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
