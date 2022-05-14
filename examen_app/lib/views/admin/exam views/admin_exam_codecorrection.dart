@@ -3,7 +3,6 @@ import 'package:examen_app/firebase/model/codecorrectionquestion.dart';
 import 'package:examen_app/helpers/widgets/button.dart';
 import 'package:examen_app/views/admin/admin_exam.dart';
 import 'package:examen_app/views/admin/admin_start.dart';
-import 'package:examen_app/views/admin/exam%20views/admin_exam_openended.dart';
 import 'package:examen_app/views/questions/codecorrection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -186,9 +185,18 @@ class _AdminExamCodeCorrection extends State<AdminExamCodeCorrection> {
                                               hintText: getMaxScore(),
                                               counterText: ""),
                                           cursorColor: buttonColor,
-                                          onChanged: (value) =>
-                                              AdminExamOpenEnded.maxScore =
-                                                  int.parse(value),
+                                          onChanged: (value) => {
+                                            if (value.isEmpty)
+                                              {
+                                                AdminExamCodeCorrection
+                                                    .maxScore = 0
+                                              }
+                                            else
+                                              {
+                                                AdminExamCodeCorrection
+                                                    .maxScore = int.parse(value)
+                                              }
+                                          },
                                         ),
                                       ),
                                     )

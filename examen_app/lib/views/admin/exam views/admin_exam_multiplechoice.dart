@@ -277,9 +277,18 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
                                               hintText: getMaxScore(),
                                               counterText: ""),
                                           cursorColor: buttonColor,
-                                          onChanged: (value) =>
-                                              AdminExamMultipleChoice.maxScore =
-                                                  int.parse(value),
+                                          onChanged: (value) => {
+                                            if (value.isEmpty)
+                                              {
+                                                AdminExamMultipleChoice
+                                                    .maxScore = 0
+                                              }
+                                            else
+                                              {
+                                                AdminExamMultipleChoice
+                                                    .maxScore = int.parse(value)
+                                              }
+                                          },
                                         ),
                                       ),
                                     ),

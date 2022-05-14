@@ -178,9 +178,15 @@ class _AdminExamOpenEnded extends State<AdminExamOpenEnded> {
                                               hintText: getMaxScore(),
                                               counterText: ""),
                                           cursorColor: buttonColor,
-                                          onChanged: (value) =>
-                                              AdminExamOpenEnded.maxScore =
-                                                  int.parse(value),
+                                          onChanged: (value) => {
+                                            if (value.isEmpty)
+                                              {AdminExamOpenEnded.maxScore = 0}
+                                            else
+                                              {
+                                                AdminExamOpenEnded.maxScore =
+                                                    int.parse(value)
+                                              }
+                                          },
                                         ),
                                       ),
                                     )
