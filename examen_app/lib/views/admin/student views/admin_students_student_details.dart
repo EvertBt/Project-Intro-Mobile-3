@@ -149,6 +149,12 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              IconButton(
+                  onPressed: () => widget.switchState(AdminStudentState.home),
+                  icon: new Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  )),
               Container(
                 width: 60,
               ),
