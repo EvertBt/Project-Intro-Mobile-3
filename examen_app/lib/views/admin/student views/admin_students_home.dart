@@ -39,7 +39,8 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
   bool convertCSVToStudent() {
     List<Student> studentsToKeep = [];
     List<Student> newStudents = [];
-    if (_csvTextController.text != '') {
+    String temp = _csvTextController.text;
+    if (temp.replaceAll(' ', '') != '') {
       try {
         List<String> items = _csvTextController.text.split(';');
         for (String item in items) {
@@ -166,8 +167,10 @@ class _AdminStudentsHome extends State<AdminStudentsHome> {
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: ElevatedButton(
           onPressed: () {
-            AdminStart.selectedStudent = AdminStart.students[i];
-            widget.switchState(AdminStudentState.studentDetails);
+            if (AdminStart.students[i].exam != null) {
+              AdminStart.selectedStudent = AdminStart.students[i];
+              widget.switchState(AdminStudentState.studentDetails);
+            }
           },
           style: ElevatedButton.styleFrom(
             primary: buttonColor,

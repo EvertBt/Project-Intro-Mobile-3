@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const Color primaryColor = Color.fromARGB(255, 155, 0, 0);
 const Color buttonColor = Color.fromARGB(255, 213, 0, 0);
 const Color lightColor = Color.fromARGB(255, 240, 85, 69);
+const Color accentColor = Color.fromARGB(255, 33, 150, 243);
 
 //Routenames
 const String homeRoute = '/';

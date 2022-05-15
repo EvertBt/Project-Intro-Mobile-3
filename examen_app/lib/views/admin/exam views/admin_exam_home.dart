@@ -467,7 +467,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                     child: CustomButton(
                       width: double.infinity,
                       height: 0,
-                      buttonColor: buttonColor,
+                      buttonColor: primaryColor,
                       padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
                       buttonText: "Examen opslaan",
                       fontSize: 35,
