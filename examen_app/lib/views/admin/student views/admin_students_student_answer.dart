@@ -8,6 +8,7 @@ import 'package:examen_app/views/questions/codecorrection.dart';
 import 'package:examen_app/views/questions/multiplechoice.dart';
 import 'package:examen_app/views/questions/openquestion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AdminStudentAnswer extends StatefulWidget {
   const AdminStudentAnswer({required this.switchState, Key? key})
@@ -23,6 +24,8 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
   TextEditingController studentController = TextEditingController();
   TextEditingController correctController = TextEditingController();
   TextEditingController codeController = TextEditingController();
+  TextEditingController scoreController = TextEditingController();
+
   Widget loadQuestion(
     BuildContext context,
     Question question,
@@ -51,7 +54,16 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
   void initState() {
     studentController.text = "!empty!";
     correctController.text = "!empty!";
+    scoreController.text = AdminStart.selectedQuestion!.score.toString();
     super.initState();
+  }
+
+  int parseScore(String value) {
+    if (value.isEmpty) {
+      return 0;
+    } else {
+      return int.parse(value);
+    }
   }
 
   @override
@@ -124,13 +136,61 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.fromLTRB(0, 0, 50, 0),
-                              child: Text(
-                                "Max score: ${AdminStart.selectedQuestion!.maxScore.toString()}",
-                                style: const TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            )
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 10, 30, 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(23),
+                                  color: buttonColor,
+                                ),
+                                child: Container(
+                                  width: 125,
+                                  margin: const EdgeInsets.all(3),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextField(
+                                          textAlign: TextAlign.right,
+                                          controller: scoreController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          maxLines: 1,
+                                          maxLength: 2,
+                                          style: const TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold),
+                                          decoration: const InputDecoration(
+                                              border: InputBorder.none,
+                                              counterText: ""),
+                                          cursorColor: buttonColor,
+                                          onChanged: (value) => {
+                                            AdminStart.selectedQuestion!.score =
+                                                parseScore(value)
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 0, 20, 0),
+                                        child: Text(
+                                          "/${AdminStart.selectedQuestion!.maxScore}",
+                                          style: const TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ))
                           ],
                         ),
                       ),

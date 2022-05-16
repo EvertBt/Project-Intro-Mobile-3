@@ -165,8 +165,6 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
 
   void saveQuestion() {
     if (!checkValidAnswers()) {
-      print(AdminExamMultipleChoice.answer);
-
       AdminStart.selectedQuestion!.question = AdminExamMultipleChoice.question;
       AdminStart.selectedQuestion!.answer = AdminExamMultipleChoice.answer;
       question!.options = AdminExamMultipleChoice.options;

@@ -1,6 +1,5 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/model/multiplechoicequestion.dart';
-import 'package:examen_app/firebase/model/question.dart';
 import 'package:flutter/material.dart';
 
 Widget multipleChoiceQuestion(
@@ -13,12 +12,13 @@ Widget multipleChoiceQuestion(
       readOnly: true,
       textAlign: TextAlign.start,
       decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: question.question,
-          hintStyle: const TextStyle(
-            fontSize: 30,
-            color: Colors.black,
-          )),
+        border: InputBorder.none,
+        hintText: question.question,
+        hintStyle: const TextStyle(
+          fontSize: 30,
+          color: Colors.black,
+        ),
+      ),
     ),
   );
 }

@@ -249,7 +249,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: 80,
                             child: Row(
                               children: [

@@ -1,14 +1,13 @@
 import 'package:examen_app/config/constants.dart';
 import 'package:examen_app/firebase/exammanager.dart';
-import 'package:examen_app/firebase/model/student.dart';
+import 'package:examen_app/firebase/model/question.dart';
 import 'package:examen_app/helpers/widgets/button.dart';
 import 'package:examen_app/views/admin/admin_start.dart';
 import 'package:examen_app/views/admin/admin_students.dart';
-import 'package:examen_app/views/admin/student%20views/admin_students_student_answer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong2/latlong.dart" as latLng;
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -136,9 +135,34 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
     );
   }
 
+  void calculateScore() {
+    compareAnswerSolution();
+
+    int totalScore = 0;
+    int totalMaxScore = 0;
+    for (Question question in AdminStart.selectedStudent!.exam!.questions!) {
+      totalScore += question.score;
+      totalMaxScore += question.maxScore;
+    }
+
+    scoreController.text = "${(totalScore / (totalMaxScore) * 20).round()}";
+  }
+
+  void compareAnswerSolution() {
+    for (int i = 0;
+        i < AdminStart.selectedStudent!.exam!.questions!.length;
+        i++) {
+      if (AdminStart.selectedStudent!.exam!.questions![i].answer ==
+          AdminStart.exam.questions![i].answer) {
+        AdminStart.selectedStudent!.exam!.questions![i].score =
+            AdminStart.exam.questions![i].maxScore;
+      }
+    }
+  }
+
   @override
   void initState() {
-    scoreController.text = AdminStart.selectedStudent!.score.toString();
+    calculateScore();
     super.initState();
   }
 
@@ -151,7 +175,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
             children: [
               IconButton(
                   onPressed: () => widget.switchState(AdminStudentState.home),
-                  icon: new Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   )),
@@ -172,95 +196,101 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
         body: Row(
           children: [
             Expanded(
-                child: Column(
-              children: [
-                Expanded(
-                    flex: 6,
-                    child: Container(
-                        margin: const EdgeInsets.fromLTRB(20, 15, 10, 15),
-                        width: 900.0,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(blurRadius: 5, color: Colors.grey)
-                            ],
-                            borderRadius: BorderRadius.circular(25)),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25),
-                            child: FlutterMap(
-                              options: MapOptions(
-                                center: latLng.LatLng(getLat(), getLng()),
-                                zoom: 16,
-                              ),
-                              children: <Widget>[
-                                TileLayerWidget(
-                                    options: TileLayerOptions(
-                                        urlTemplate:
-                                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                        subdomains: ['a', 'b', 'c'])),
-                                MarkerLayerWidget(
-                                    options: MarkerLayerOptions(
-                                  markers: [
-                                    Marker(
-                                      width: 80.0,
-                                      height: 80.0,
-                                      point: latLng.LatLng(getLat(), getLng()),
-                                      builder: (ctx) => const Icon(
-                                          Icons.location_on,
-                                          color: Colors.blue,
-                                          size: 50),
-                                    ),
-                                  ],
-                                )),
+              child: Column(
+                children: [
+                  Expanded(
+                      flex: 6,
+                      child: Container(
+                          margin: const EdgeInsets.fromLTRB(20, 15, 10, 15),
+                          width: 900.0,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(blurRadius: 5, color: Colors.grey)
                               ],
-                            )))),
-                Expanded(
+                              borderRadius: BorderRadius.circular(25)),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: FlutterMap(
+                                options: MapOptions(
+                                  center: latLng.LatLng(getLat(), getLng()),
+                                  zoom: 16,
+                                ),
+                                children: <Widget>[
+                                  TileLayerWidget(
+                                      options: TileLayerOptions(
+                                          urlTemplate:
+                                              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                          subdomains: ['a', 'b', 'c'])),
+                                  MarkerLayerWidget(
+                                      options: MarkerLayerOptions(
+                                    markers: [
+                                      Marker(
+                                        width: 80.0,
+                                        height: 80.0,
+                                        point:
+                                            latLng.LatLng(getLat(), getLng()),
+                                        builder: (ctx) => const Icon(
+                                            Icons.location_on,
+                                            color: Colors.blue,
+                                            size: 50),
+                                      ),
+                                    ],
+                                  )),
+                                ],
+                              )))),
+                  Expanded(
                     flex: 1,
                     child: Container(
-                        margin: const EdgeInsets.only(
-                            left: 20.0, right: 10, bottom: 15),
-                        width: 900.0,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(blurRadius: 5, color: Colors.grey)
-                            ],
-                            borderRadius: BorderRadius.circular(25)),
-                        child: Row(
-                          children: [
-                            Container(
-                                margin: const EdgeInsets.only(left: 30),
-                                child: FutureBuilder<Location>(
-                                  future: futureLocation,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Text(
-                                            rightAdress(
-                                                snapshot.data!.display_name),
-                                            style: const TextStyle(
-                                              fontSize: 25,
-                                            )),
-                                      );
-                                    } else {
-                                      return const Text(
-                                        'Locatie kan niet geladen worden',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: buttonColor,
-                                            fontWeight: FontWeight.bold),
-                                      );
-                                    }
-                                    ;
-                                  },
-                                )),
-                            Expanded(child: Container()),
+                      margin: const EdgeInsets.only(
+                          left: 20.0, right: 10, bottom: 15),
+                      width: 900.0,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(blurRadius: 5, color: Colors.grey)
                           ],
-                        )))
-              ],
-            )),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(left: 30),
+                            child: FutureBuilder<Location>(
+                              future: futureLocation,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Text(
+                                      rightAdress(snapshot.data!.display_name),
+                                      style: const TextStyle(
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return const Text(
+                                    'Locatie kan niet geladen worden',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: buttonColor,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
             Expanded(
               child: Column(
                 children: [
@@ -288,6 +318,12 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                                 width: 60,
                                 margin: const EdgeInsets.only(right: 5),
                                 child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  maxLines: 1,
+                                  maxLength: 2,
                                   controller: scoreController,
                                   onChanged: (value) => {
                                     AdminStart.selectedStudent!.score =
@@ -298,6 +334,7 @@ class _AdminStudentDetails extends State<AdminStudentDetails> {
                                       fontSize: 30,
                                       fontWeight: FontWeight.bold),
                                   decoration: InputDecoration(
+                                    counterText: "",
                                     contentPadding: const EdgeInsets.fromLTRB(
                                         12, 12, 12, 12),
                                     labelStyle:
