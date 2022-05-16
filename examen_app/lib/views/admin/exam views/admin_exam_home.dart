@@ -68,6 +68,7 @@ class _AdminExamHome extends State<AdminExamHome> {
 
   void resetExam() async {
     AdminStart.exam = await ExamManager.getExam();
+    AdminExamHome.duration = AdminStart.exam.duration;
     setState(() {});
   }
 
@@ -181,6 +182,7 @@ class _AdminExamHome extends State<AdminExamHome> {
                             buttonColor: buttonColor,
                             onPressed: () {
                               titleController.text = AdminStart.exam.title;
+                              resetExam();
                             },
                             padding: const EdgeInsets.fromLTRB(0, 7, 7, 10),
                             borderRadius: 19,
@@ -228,26 +230,6 @@ class _AdminExamHome extends State<AdminExamHome> {
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 60,
-                                  margin:
-                                      const EdgeInsets.fromLTRB(0, 5, 30, 5),
-                                  child: CustomButton(
-                                    width: double.infinity,
-                                    height: 75,
-                                    buttonColor: buttonColor,
-                                    onPressed: () {
-                                      resetExam(); //reset vragen
-                                    },
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 7, 7, 10),
-                                    borderRadius: 19,
-                                    icon: const Icon(
-                                      Icons.refresh,
-                                      size: 45,
                                     ),
                                   ),
                                 ),
