@@ -522,7 +522,7 @@ class _AdminExamMultipleChoice extends State<AdminExamMultipleChoice> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

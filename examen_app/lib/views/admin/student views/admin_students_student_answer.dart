@@ -67,12 +67,13 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                    onPressed: () =>
-                        widget.switchState(AdminStudentState.studentDetails),
-                    icon: new Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
+                  onPressed: () =>
+                      widget.switchState(AdminStudentState.studentDetails),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                ),
                 Expanded(child: Container()),
                 Text(
                   "Antwoord vraag ${AdminStart.selectedStudent!.exam!.questions!.indexOf(AdminStart.selectedQuestion!) + 1}",
@@ -90,7 +91,6 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                 child: Container(
                   margin: const EdgeInsets.only(
                       top: 15.0, bottom: 15.0, left: 20.0, right: 10.0),
-                  width: 700.0,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: const [
@@ -100,19 +100,20 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                   child: Column(
                     children: [
                       Container(
-                          height: 70,
-                          decoration: BoxDecoration(
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3))
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(25.0)),
-                          child: Row(
-                            children: [
-                              Container(
+                        height: 70,
+                        decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3))
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25.0)),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
                                 margin: const EdgeInsets.only(left: 50),
                                 child: Text(
                                   "Vraag ${AdminStart.selectedStudent!.exam!.questions!.indexOf(AdminStart.selectedQuestion!) + 1}",
@@ -121,14 +122,26 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ],
-                          )),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              child: Text(
+                                "Max score: ${AdminStart.selectedQuestion!.maxScore.toString()}",
+                                style: const TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                       Expanded(
-                          child: loadQuestion(
-                              context,
-                              AdminStart.exam.questions![AdminStart
-                                  .selectedStudent!.exam!.questions!
-                                  .indexOf(AdminStart.selectedQuestion!)]))
+                        child: loadQuestion(
+                          context,
+                          AdminStart.exam.questions![AdminStart
+                              .selectedStudent!.exam!.questions!
+                              .indexOf(AdminStart.selectedQuestion!)],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -140,7 +153,6 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                     child: Container(
                       margin: const EdgeInsets.only(
                           top: 15.0, bottom: 15.0, left: 10.0, right: 20.0),
-                      width: 700.0,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: const [
@@ -187,8 +199,7 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                   Expanded(
                     child: Container(
                       margin: const EdgeInsets.only(
-                          top: 15.0, bottom: 15.0, left: 10.0, right: 20.0),
-                      width: 700.0,
+                          top: 0, bottom: 15.0, left: 10.0, right: 20.0),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: const [
@@ -237,7 +248,7 @@ class _AdminStudentAnswer extends State<AdminStudentAnswer> {
                 ],
               ))
             ],
-          ), //bottomnavbar TEMP
+          ),
         ));
   }
 }

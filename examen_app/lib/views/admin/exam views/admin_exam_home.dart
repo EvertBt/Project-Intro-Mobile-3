@@ -249,8 +249,8 @@ class _AdminExamHome extends State<AdminExamHome> {
                               ),
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
+                          Container(
+                            height: 80,
                             child: Row(
                               children: [
                                 Expanded(
